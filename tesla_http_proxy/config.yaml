@@ -1,0 +1,32 @@
+name: "Tesla HTTP Proxy"
+version: "1.0.6"
+slug: "tesla_http_proxy"
+description: "Proxy requests for Tesla Fleet API"
+url: "https://github.com/llamafilm/tesla-http-proxy-addon/tree/main/tesla_http_proxy"
+arch:
+  - armhf
+  - armv7
+  - aarch64
+  - amd64
+  - i386
+init: false
+map:
+  - share:rw
+startup: services
+options:
+  client_id: ""
+  client_secret: ""
+  vin: ""
+  domain: ""
+schema:
+  client_id: "str"
+  client_secret: "password"
+  vin: "match(^[A-Z0-9]{17}$)"
+  domain: "match(^[a-z0-9-.]{1,253}$)"
+ingress: true
+panel_icon: mdi:forward
+backup_exclude: 
+  - /data/gnugpg
+  - /data/password-store
+hassio_api: true
+image: "ghcr.io/llamafilm/tesla_http_proxy_{arch}"

@@ -1,0 +1,16 @@
+configuration:
+  ssl:
+    name: Enable SSL
+    description: Enable usage of SSL on the webserver inside the add-on
+  client_id:
+    name: Client ID
+    description: Client ID obtained by creating app at developer.tesla.com
+  client_secret:
+    name: Client Secret
+    description: Client Secret obtained by creating app at developer.tesla.com
+  vin:
+    name: VIN
+    description: 17 digit VIN number for your car
+  domain:
+    name: Fully Qualified Domain Name
+    description: Lowercase, without https, e.g. `home.example.com`

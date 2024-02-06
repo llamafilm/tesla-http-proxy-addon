@@ -1,4 +1,3 @@
-# https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
-name: Example Home Assistant add-on repository
-url: 'https://github.com/home-assistant/addons-example'
-maintainer: Awesome Maintainer <awesome@example.com>
+name: Tesla HTTP Proxy
+url: 'https://github.com/llamafilm/tesla-http-proxy-addon'
+maintainer: Elliott Balsley <ebalsley@pm.me>
