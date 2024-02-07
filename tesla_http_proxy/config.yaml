@@ -30,5 +30,4 @@ backup_exclude:
   - /data/password-store
 hassio_api: true
 stage: experimental
-watchdog: 'https://[HOST]:[PORT:443]/'
 image: "ghcr.io/llamafilm/tesla_http_proxy_{arch}"
