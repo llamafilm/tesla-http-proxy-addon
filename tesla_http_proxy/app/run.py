@@ -1,7 +1,7 @@
 import os
 import uuid
 import requests
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template
 from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
@@ -81,7 +81,7 @@ def callback():
     with open('/data/access_token', 'w') as f:
         f.write(req.json()['access_token'])
 
-    return redirect('homeassistant://navigate', code=302)
+    return '<html><head><meta name="viewport" content="initial-scale=1.0"></head><body><div style="text-align:center;padding:100px;"><a href="homeassistant://navigate"><button type="button">Return to Home Assistant</button></a></div></body></html>'
 
 # Exit cleanly so the HTTP Proxy can start
 @app.route('/shutdown')
