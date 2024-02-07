@@ -1,0 +1,16 @@
+configuration:
+  ssl:
+    name: Activer SSL
+    description: Activer l'usage SSL pour le serveur-web du add-on
+  client_id:
+    name: Client ID
+    description: Client ID obtenu lors de la creation de l'application sur developer.tesla.com
+  client_secret:
+    name: Client Secret
+    description: Client Secret obtenu lors de la creation de l'application at developer.tesla.com
+  vin:
+    name: VIN
+    description: VIN alphanumérique (17) complet de votre voiture
+  domain:
+    name: Nom de domaine complet
+    description: Lettre minuscule, sans https, i.e. `home.example.com`
