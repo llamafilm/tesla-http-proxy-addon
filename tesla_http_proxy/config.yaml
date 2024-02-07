@@ -1,5 +1,5 @@
 name: "Tesla HTTP Proxy"
-version: "1.0.6"
+version: "1.1.0"
 slug: "tesla_http_proxy"
 description: "Proxy requests for Tesla Fleet API"
 url: "https://github.com/llamafilm/tesla-http-proxy-addon/tree/main/tesla_http_proxy"
@@ -29,4 +29,6 @@ backup_exclude:
   - /data/gnugpg
   - /data/password-store
 hassio_api: true
+stage: experimental
+watchdog: 'https://[HOST]:[PORT:443]/'
 image: "ghcr.io/llamafilm/tesla_http_proxy_{arch}"

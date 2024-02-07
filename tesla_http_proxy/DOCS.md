@@ -14,8 +14,8 @@ Request application access at [developer.tesla.com](https://developer.tesla.com)
 
 - Name of your legal entity (first and last name is fine)
 - App Name, Description, Purpose (can be anything)
-- **Allowed Origin**: matching the FQDN of your Home Assistant server.  Must be lowercase, e.g. `https://home.example.com`
-- **Redirect URI**: Append `/callback` to the FQDN, e.g. `https://home.example.com/callback`
+- **Allowed Origin**: matching the FQDN of your Home Assistant server.  Must be lowercase, e.g. `https://tesla.example.com`
+- **Redirect URI**: Append `/callback` to the FQDN, e.g. `https://tesla.example.com/callback`
 - **Scopes**: `vehicle_device_data`, `vehicle_cmds`, `vehicle_charging_cmds`
 
 Tesla will provide a Client ID and Client Secret.  Enter these, along with your VIN in add-on configuration.
@@ -31,7 +31,7 @@ Start this add-on and wait for it to initialize.  It will fail with an error bec
 
 Restart this add-on and this time it should succeed.
 
-Open this add-on Web UI in the iOS Home Assistant app and click **Generate OAuth Token**.  This will launch a web browser where you authenticate with Tesla. The API token is printed to the log.
+Open this add-on Web UI in the iOS Home Assistant app and click **Generate OAuth Token**.  This will launch a web browser where you authenticate with Tesla. The API refresh token is printed to the log.  Write this down as it will not be shown again after you restart the add-on.  If you lose it, you'll need to reinstall the add-on, or you can find it in the `/data` directory.
 
 Return to the add-on Web UI and click **Enroll public key in your vehicle**.  This will launch the Tesla app where it prompts for approval.
 
@@ -41,8 +41,8 @@ Make requests from Home Assistant like this:
 
 ```
 curl --cacert /share/tesla/selfsigned.pem \
-    --header "Authorization: Bearer  $TESLA_AUTH_TOKEN" \
-    "https://local-tesla-http-proxy/api/1/vehicles/$VIN/vehicle_data"
+    --header "Authorization: Bearer $TESLA_AUTH_TOKEN" \
+    "https://local-tesla-http-proxy/api/1/vehicles"
 ```
 
 ## Troubleshooting

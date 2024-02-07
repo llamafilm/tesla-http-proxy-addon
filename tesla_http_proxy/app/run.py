@@ -1,7 +1,7 @@
 import os
 import uuid
 import requests
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
@@ -13,6 +13,7 @@ DOMAIN = os.environ['DOMAIN']
 SCOPES = 'openid offline_access vehicle_device_data vehicle_cmds vehicle_charging_cmds'
 AUDIENCE = 'https://fleet-api.prd.na.vn.cloud.tesla.com'
 
+# generate partner authentication token
 print('\n### Generate Partner Authentication Token ###')
 headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 payload = {
@@ -26,6 +27,7 @@ req = requests.post('https://auth.tesla.com/oauth2/v3/token', headers=headers, d
 req.raise_for_status()
 tesla_api_token = req.json()['access_token']
 
+# register Tesla account to enable API access
 print('\n### Registering Tesla account ###')
 headers = {
     'Authorization': 'Bearer ' + tesla_api_token,
@@ -45,13 +47,14 @@ def handle_exception(e):
     # now you're handling non-HTTP exceptions only
     return 'Unknown Error', 500
 
+# Web UI for add-on inside Home Assistant
 @app.route('/')
 def index():
     return render_template('index.html', domain=DOMAIN, client_id=CLIENT_ID, scopes=SCOPES, randomstate=uuid.uuid4().hex, randomnonce=uuid.uuid4().hex)
 
+# Tesla servers POST here to complete authorization
 @app.route('/callback')
 def callback():
-    # Tesla servers POST here to complete authorization
     # sometimes I don't get a valid code, not sure why
     try:
         code = request.args['code']
@@ -71,17 +74,18 @@ def callback():
     }
     req = requests.post('https://auth.tesla.com/oauth2/v3/token', headers=headers, data=payload)
     app.logger.warning('Access token for Fleet API requests: %s' % req.json()['access_token'])
+    app.logger.warning('Refresh token for Fleet API requests: %s' % req.json()['refresh_token'])
     req.raise_for_status()
     with open('/data/refresh_token', 'w') as f:
         f.write(req.json()['refresh_token'])
     with open('/data/access_token', 'w') as f:
         f.write(req.json()['access_token'])
 
-    return 'OK'
+    return redirect('homeassistant://navigate', code=302)
 
+# Exit cleanly so the HTTP Proxy can start
 @app.route('/shutdown')
 def shutdown():
-    # exit cleanly
     os._exit(0)
 
 if __name__ == '__main__':
