@@ -15,7 +15,6 @@ This repository contains the following add-ons
 ![Supports i386 Architecture][i386-shield]
 
 <!--
-
 Notes to developers after forking or using the github template feature:
 - While developing comment out the 'image' key from 'example/config.yaml' to make the supervisor build the addon
   - Remember to put this back when pushing up your changes.
