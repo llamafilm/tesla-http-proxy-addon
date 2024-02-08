@@ -29,6 +29,7 @@ else
       -keyout /data/key.pem -out /data/cert.pem -sha256 -days 3650 \
       -addext "extendedKeyUsage = serverAuth" \
       -addext "keyUsage = digitalSignature, keyCertSign, keyAgreement"
+  mkdir -p /share/tesla
   cp /data/cert.pem /share/tesla/selfsigned.pem
 
   # setup GnuPG and password-store in persistent data directory
@@ -52,4 +53,4 @@ else
 fi
 
 printf "\n### Starting Tesla HTTP Proxy ###\n"
-/root/go/bin/tesla-http-proxy -keyring-type pass -key-name myself -cert /data/cert.pem -tls-key /data/key.pem -port 443 -host 0.0.0.0 -verbose
+/root/go/bin/tesla-http-proxy -keyring-debug -keyring-type pass -key-name myself -cert /data/cert.pem -tls-key /data/key.pem -port 443 -host 0.0.0.0 -verbose

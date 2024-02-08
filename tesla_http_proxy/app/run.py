@@ -40,6 +40,7 @@ req.raise_for_status()
 
 @app.errorhandler(Exception)
 def handle_exception(e):
+    app.logger.error(e)
     # pass through HTTP errors
     if isinstance(e, HTTPException):
         return e
