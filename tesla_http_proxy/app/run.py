@@ -14,13 +14,13 @@ SCOPES = 'openid offline_access vehicle_device_data vehicle_cmds vehicle_chargin
 AUDIENCE = 'https://fleet-api.prd.na.vn.cloud.tesla.com'
 
 # generate partner authentication token
-print('\n### Generate Partner Authentication Token ###')
+print('\n*** Generating Partner Authentication Token *** \n')
 headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 payload = {
     'grant_type': 'client_credentials',
     'client_id': CLIENT_ID,
     'client_secret': CLIENT_SECRET,
-    'scope': 'openid vehicle_device_data vehicle_cmds vehicle_charging_cmds',
+    'scope': SCOPES,
     'audience': AUDIENCE
 }
 req = requests.post('https://auth.tesla.com/oauth2/v3/token', headers=headers, data=payload)
@@ -28,7 +28,7 @@ req.raise_for_status()
 tesla_api_token = req.json()['access_token']
 
 # register Tesla account to enable API access
-print('\n### Registering Tesla account ###')
+print('\n*** Registering Tesla account *** \n')
 headers = {
     'Authorization': 'Bearer ' + tesla_api_token,
     'Content-Type': 'application/json'
@@ -56,6 +56,7 @@ def index():
 # Tesla servers POST here to complete authorization
 @app.route('/callback')
 def callback():
+    # app.logger.warning('callback args: %s' % request.args)
     # sometimes I don't get a valid code, not sure why
     try:
         code = request.args['code']
@@ -75,6 +76,7 @@ def callback():
     }
     req = requests.post('https://auth.tesla.com/oauth2/v3/token', headers=headers, data=payload)
     app.logger.warning('Access token for Fleet API requests: %s' % req.json()['access_token'])
+    app.logger.warning('Access token expiration: %s' % req.json()['expires_in'])
     app.logger.warning('Refresh token for Fleet API requests: %s' % req.json()['refresh_token'])
     req.raise_for_status()
     with open('/data/refresh_token', 'w') as f:
@@ -82,7 +84,7 @@ def callback():
     with open('/data/access_token', 'w') as f:
         f.write(req.json()['access_token'])
 
-    return '<html><head><meta name="viewport" content="initial-scale=1.0"></head><body><div style="text-align:center;padding:100px;"><a href="homeassistant://navigate"><button type="button">Return to Home Assistant</button></a></div></body></html>'
+    return '<html><head><meta name="viewport" content="initial-scale=1.0"></head><body><div style="text-align:center;padding:100px;">Authorization complete<br><br><a href="homeassistant://navigate"><button type="button">Return to Home Assistant</button></a></div></body></html>'
 
 # Exit cleanly so the HTTP Proxy can start
 @app.route('/shutdown')
@@ -90,5 +92,5 @@ def shutdown():
     os._exit(0)
 
 if __name__ == '__main__':
-    print('\n### Starting Flask server... ###')
+    print('\n*** Starting Flask server... *** \n')
     app.run(port=8099, debug=True, host='0.0.0.0')

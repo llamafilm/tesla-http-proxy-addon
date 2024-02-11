@@ -1,5 +1,12 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 1.1.3
+
+### Changed
+
+- Improve error handling when add-on is restarted
+- Correct hostname for local development
+
 ## 1.1.0
 
 ### Changed
