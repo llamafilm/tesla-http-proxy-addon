@@ -1,11 +1,13 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
-## 1.1.3
+## 1.2.0
 
 ### Changed
 
-- Improve error handling when add-on is restarted
-- Correct hostname for local development
+- Remove unnecessary VIN from config
+- Add `regenerate_auth` config option to help with OAuth testing
+- Expose ports 443 and 8099 to support external reverse proxies
+- Improved error handling when add-on is restarted
 
 ## 1.1.0
 

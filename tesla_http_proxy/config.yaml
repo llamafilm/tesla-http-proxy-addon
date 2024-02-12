@@ -1,5 +1,5 @@
 name: "Tesla HTTP Proxy"
-version: "1.1.3"
+version: "1.2.0"
 slug: "tesla_http_proxy"
 description: "Proxy requests for Tesla Fleet API"
 url: "https://github.com/llamafilm/tesla-http-proxy-addon/tree/main/tesla_http_proxy"
@@ -16,13 +16,13 @@ startup: services
 options:
   client_id: ""
   client_secret: ""
-  vin: ""
   domain: ""
+  regenerate_auth: true
 schema:
-  client_id: "str"
-  client_secret: "password"
-  vin: "match(^[A-Z0-9]{17}$)"
-  domain: "match(^[a-z0-9-.]{1,253}$)"
+  client_id: str
+  client_secret: password
+  domain: match(^[a-z0-9-.]{1,253}$)
+  regenerate_auth: bool
 ingress: true
 panel_icon: mdi:forward
 backup_exclude: 
@@ -30,4 +30,7 @@ backup_exclude:
   - /data/password-store
 hassio_api: true
 stage: experimental
+ports:
+  443/tcp: 4430
+  8099/tcp: 8099
 image: "ghcr.io/llamafilm/tesla_http_proxy_{arch}"

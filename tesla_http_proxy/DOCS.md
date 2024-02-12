@@ -18,7 +18,7 @@ Request application access at [developer.tesla.com](https://developer.tesla.com)
 - **Redirect URI**: Append `/callback` to the FQDN, e.g. `https://tesla.example.com/callback`
 - **Scopes**: `vehicle_device_data`, `vehicle_cmds`, `vehicle_charging_cmds`
 
-Tesla will provide a Client ID and Client Secret.  Enter these, along with your VIN in add-on configuration.
+Tesla will provide a Client ID and Client Secret.  Enter these in add-on configuration.
 
 Customize the Nginx add-on configuration like this and then restart it
 ```
@@ -31,18 +31,18 @@ Start this add-on and wait for it to initialize.  It will fail with an error bec
 
 Restart this add-on and this time it should succeed.
 
-Open this add-on Web UI in the iOS Home Assistant app and click **Generate OAuth Token**.  This will launch a web browser where you authenticate with Tesla. The API refresh token is printed to the log.  Write this down as it will not be shown again after you restart the add-on.  If you lose it, you'll need to reinstall the add-on, or you can find it in the `/data` directory.
+Open this add-on Web UI in the iOS Home Assistant app and click **Generate OAuth Token**.  This will launch a web browser where you authenticate with Tesla. The API refresh token is printed to the log.  Write this down as it will not be shown again after you restart the add-on.
 
 Return to the add-on Web UI and click **Enroll public key in your vehicle**.  This will launch the Tesla app where it prompts for approval.
 
-After that is complete, click **Shutdown Flask Server**.  Now the Tesla HTTPS proxy will start.
+After that is complete, click **Shutdown Flask Server**.  Now the Tesla HTTPS proxy will start, and the `Regenerate auth` setting will be automatically disabled.
 
 Make requests from Home Assistant like this: 
 
 ```
 curl --cacert /share/tesla/selfsigned.pem \
     --header "Authorization: Bearer $TESLA_AUTH_TOKEN" \
-    "https://local-tesla-http-proxy/api/1/vehicles"
+    "https://addon-tesla-http-proxy/api/1/vehicles"
 ```
 
 ## Troubleshooting
@@ -64,3 +64,5 @@ You should have a config file at `/share/nginx_proxy/nginx_tesla.conf` that does
 - Proxy port 8099 to the built in Flask app
 
 This was tested with a 2021 Model 3 in the United States.  Other regions may require different endpoints.
+
+If you get `login_required` error when trying to send API commands, it's likely because you tried to reuse the refresh token more than once.  https://github.com/teslamotors/vehicle-command/issues/160

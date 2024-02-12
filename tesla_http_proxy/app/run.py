@@ -29,17 +29,19 @@ tesla_api_token = req.json()['access_token']
 
 # register Tesla account to enable API access
 print('\n*** Registering Tesla account *** \n')
-headers = {
+req = requests.post('https://fleet-api.prd.na.vn.cloud.tesla.com/api/1/partner_accounts',
+    headers={
     'Authorization': 'Bearer ' + tesla_api_token,
     'Content-Type': 'application/json'
-}
-payload = '{"domain": "%s"}' % DOMAIN
-req = requests.post('https://fleet-api.prd.na.vn.cloud.tesla.com/api/1/partner_accounts', headers=headers,data=payload)
+    },
+    data='{"domain": "%s"}' % DOMAIN
+)
 print(req.text)
 req.raise_for_status()
 
 @app.errorhandler(Exception)
 def handle_exception(e):
+    """Exception handler for HTTP requests"""
     app.logger.error(e)
     # pass through HTTP errors
     if isinstance(e, HTTPException):
@@ -48,49 +50,51 @@ def handle_exception(e):
     # now you're handling non-HTTP exceptions only
     return 'Unknown Error', 500
 
-# Web UI for add-on inside Home Assistant
 @app.route('/')
 def index():
-    return render_template('index.html', domain=DOMAIN, client_id=CLIENT_ID, scopes=SCOPES, randomstate=uuid.uuid4().hex, randomnonce=uuid.uuid4().hex)
+    """Web UI for add-on inside Home Assistant"""
+    return render_template('index.html', domain=DOMAIN, client_id=CLIENT_ID,
+        scopes=SCOPES, randomstate=uuid.uuid4().hex, randomnonce=uuid.uuid4().hex)
 
-# Tesla servers POST here to complete authorization
 @app.route('/callback')
 def callback():
+    """Handle POST callback from Tesla server to complete OAuth"""
+
     # app.logger.warning('callback args: %s' % request.args)
     # sometimes I don't get a valid code, not sure why
     try:
         code = request.args['code']
     except KeyError:
-        app.logger.error('args: %s' % request.args)
-        return f'Invalid code!', 400
+        app.logger.error('args: %s', request.args)
+        return 'Invalid code!', 400
 
     # Exchange code for refresh_token
-    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-    payload = {
-        'grant_type': 'authorization_code',
-        'client_id': CLIENT_ID,
-        'client_secret': CLIENT_SECRET,
-        'code': code,
-        'audience': AUDIENCE,
-        'redirect_uri': f"https://{DOMAIN}/callback"
-    }
-    req = requests.post('https://auth.tesla.com/oauth2/v3/token', headers=headers, data=payload)
-    app.logger.warning('Access token for Fleet API requests: %s' % req.json()['access_token'])
-    app.logger.warning('Access token expiration: %s' % req.json()['expires_in'])
-    app.logger.warning('Refresh token for Fleet API requests: %s' % req.json()['refresh_token'])
+    req = requests.post('https://auth.tesla.com/oauth2/v3/token',
+        headers={
+            'Content-Type': 'application/x-www-form-urlencoded'},
+        data={
+            'grant_type': 'authorization_code',
+            'client_id': CLIENT_ID,
+            'client_secret': CLIENT_SECRET,
+            'code': code,
+            'audience': AUDIENCE,
+            'redirect_uri': f"https://{DOMAIN}/callback"
+        }
+    )
+    app.logger.warning('Refresh token for Fleet API requests: %s', req.json()['refresh_token'])
     req.raise_for_status()
     with open('/data/refresh_token', 'w') as f:
         f.write(req.json()['refresh_token'])
     with open('/data/access_token', 'w') as f:
         f.write(req.json()['access_token'])
 
-    return '<html><head><meta name="viewport" content="initial-scale=1.0"></head><body><div style="text-align:center;padding:100px;">Authorization complete<br><br><a href="homeassistant://navigate"><button type="button">Return to Home Assistant</button></a></div></body></html>'
+    return render_template('callback.html')
 
-# Exit cleanly so the HTTP Proxy can start
 @app.route('/shutdown')
 def shutdown():
+    """Shutdown Flask server so the HTTP proxy can start"""
     os._exit(0)
 
 if __name__ == '__main__':
     print('\n*** Starting Flask server... *** \n')
-    app.run(port=8099, debug=True, host='0.0.0.0')
+    app.run(port=8099, debug=False, host='0.0.0.0')

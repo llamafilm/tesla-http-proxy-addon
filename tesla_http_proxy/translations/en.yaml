@@ -8,9 +8,12 @@ configuration:
   client_secret:
     name: Client Secret
     description: Client Secret obtained by creating app at developer.tesla.com
-  vin:
-    name: VIN
-    description: 17 digit VIN number for your car
   domain:
     name: Fully Qualified Domain Name
     description: Lowercase, without https, e.g. `home.example.com`
+  regenerate_auth:
+    name: Regenerate keypair and certificate
+    description: This will be automatically disabled after first run
+network:
+  8099/tcp: Temporary web server used only for initial setup
+  443/tcp: HTTPS Proxy for Fleet API
