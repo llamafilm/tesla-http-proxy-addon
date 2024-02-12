@@ -8,9 +8,14 @@ configuration:
   client_secret:
     name: Client Secret
     description: Client Secret obtenu lors de la creation de l'application at developer.tesla.com
-  vin:
-    name: VIN
-    description: VIN alphanumérique (17) complet de votre voiture
   domain:
-    name: Nom de domaine complet
+    name: Nom de domaine complet (FQDN)
     description: Lettre minuscule, sans https, i.e. `home.example.com`
+  regenerate_auth:
+    name: Regénérer la paire de clés et le certificat
+    description: Cette option est automatiquement désactivée après la première exécution
+  region:
+    name: Région
+network:
+  8099/tcp: Serveur Web temporaire utilisé que pour la configuration initiale
+  443/tcp: HTTPS Proxy pour le Fleet API
