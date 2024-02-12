@@ -1,7 +1,7 @@
 import os
 import uuid
 import requests
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, cli
 from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
@@ -111,4 +111,5 @@ def shutdown():
 
 if __name__ == '__main__':
     print('\n*** Starting Flask server... *** \n')
+    cli.show_server_banner = lambda *_: None
     app.run(port=8099, debug=False, host='0.0.0.0')
