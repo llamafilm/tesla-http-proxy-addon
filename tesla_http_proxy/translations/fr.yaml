@@ -1,0 +1,21 @@
+configuration:
+  ssl:
+    name: Activer SSL
+    description: Activer l'usage SSL pour le serveur-web du add-on
+  client_id:
+    name: Client ID
+    description: Client ID obtenu lors de la creation de l'application sur developer.tesla.com
+  client_secret:
+    name: Client Secret
+    description: Client Secret obtenu lors de la creation de l'application at developer.tesla.com
+  domain:
+    name: Nom de domaine pleinement qualifié (FQDN)
+    description: Lettre minuscule, sans https, i.e. `home.example.com`
+  regenerate_auth:
+    name: Regénérer la paire de clés et le certificat
+    description: Cette option est automatiquement désactivée après la première exécution
+  region:
+    name: Région
+network:
+  8099/tcp: Serveur Web temporaire utilisé que pour la configuration initiale
+  443/tcp: HTTPS Proxy pour le Fleet API
