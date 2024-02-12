@@ -13,6 +13,9 @@ DOMAIN = os.environ['DOMAIN']
 SCOPES = 'openid offline_access vehicle_device_data vehicle_cmds vehicle_charging_cmds'
 AUDIENCE = 'https://fleet-api.prd.na.vn.cloud.tesla.com'
 
+BLUE = "\u001b[34m"
+RESET = "\x1b[0m"
+
 # generate partner authentication token
 print('\n*** Generating Partner Authentication Token *** \n')
 headers = {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -81,7 +84,13 @@ def callback():
             'redirect_uri': f"https://{DOMAIN}/callback"
         }
     )
-    app.logger.warning('Refresh token for Fleet API requests: %s', req.json()['refresh_token'])
+
+    app.logger.info(f"Info to enter into Tesla Custom component:\n \
+        Refresh token  : {BLUE}{req.json()['refresh_token']}{RESET}\n \
+        Proxy URL      : {BLUE}https://{os.uname().nodename}{RESET}\n \
+        SSL certificate: {BLUE}/share/tesla/selfsigned.pem{RESET}\n \
+        Client ID      : {BLUE}{CLIENT_ID}\n{RESET}")
+
     req.raise_for_status()
     with open('/data/refresh_token', 'w') as f:
         f.write(req.json()['refresh_token'])
