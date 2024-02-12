@@ -1,5 +1,12 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 1.2.2
+
+### Changed
+
+- Support all 3 Fleet API regions
+- Colored output to help configuration of `tesla_custom` integration
+
 ## 1.2.0
 
 ### Changed

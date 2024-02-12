@@ -14,6 +14,8 @@ configuration:
   regenerate_auth:
     name: Regenerate keypair and certificate
     description: This will be automatically disabled after first run
+  region:
+    name: Region
 network:
   8099/tcp: Temporary web server used only for initial setup
   443/tcp: HTTPS Proxy for Fleet API

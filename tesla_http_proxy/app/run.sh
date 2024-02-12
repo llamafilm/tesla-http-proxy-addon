@@ -5,6 +5,7 @@ set -e
 export CLIENT_ID="$(bashio::config 'client_id')"
 export CLIENT_SECRET="$(bashio::config 'client_secret')"
 export DOMAIN="$(bashio::config 'domain')"
+export REGION="$(bashio::config 'region')"
 
 export GNUPGHOME=/data/gnugpg
 export PASSWORD_STORE_DIR=/data/password-store
@@ -14,8 +15,7 @@ generate_keypair() {
   if ping -c 1 core-nginx-proxy >/dev/null 2>&1; then
     bashio::log.info "Current Nginx configuration"
     bashio::addon.options core_nginx_proxy
-    #curl -s GET -H "Authorization: Bearer $SUPERVISOR_TOKEN" http://supervisor/addons/core_nginx_proxy/info | jq .data.options
-    
+
     bashio::log.info "Adding custom config to /share/nginx_proxy/nginx_tesla.conf"
     mkdir -p /share/nginx_proxy
     sed "s/__DOMAIN__/${DOMAIN}/g; s/__PROXYHOST__/${HOSTNAME}/g" /app/nginx_tesla.conf > /share/nginx_proxy/nginx_tesla.conf
@@ -63,7 +63,7 @@ else
   generate_keypair
 fi
 
-if [ -f /data/access_token ] || bashio::config.true regenerate_auth; then  
+if [ -f /data/access_token ] || bashio::config.true regenerate_auth; then
   bashio::log.notice "Starting temporary Python app for authentication flow"
   python3 /app/run.py
   # disable this setting so the proxy launches immediately next time

@@ -10,8 +10,13 @@ SUPERVISOR_TOKEN = os.environ['SUPERVISOR_TOKEN']
 CLIENT_ID = os.environ['CLIENT_ID']
 CLIENT_SECRET = os.environ['CLIENT_SECRET']
 DOMAIN = os.environ['DOMAIN']
+REGION = os.environ['REGION']
 SCOPES = 'openid offline_access vehicle_device_data vehicle_cmds vehicle_charging_cmds'
-AUDIENCE = 'https://fleet-api.prd.na.vn.cloud.tesla.com'
+AUDIENCE = {
+    'North America, Asia-Pacific': 'https://fleet-api.prd.na.vn.cloud.tesla.com',
+    'Europe, Middle East, Africa': 'https://fleet-api.prd.eu.vn.cloud.tesla.com',
+    'China'                      : 'https://fleet-api.prd.cn.vn.cloud.tesla.cn'
+}[REGION]
 
 BLUE = "\u001b[34m"
 RESET = "\x1b[0m"
@@ -32,7 +37,7 @@ tesla_api_token = req.json()['access_token']
 
 # register Tesla account to enable API access
 print('\n*** Registering Tesla account *** \n')
-req = requests.post('https://fleet-api.prd.na.vn.cloud.tesla.com/api/1/partner_accounts',
+req = requests.post(f'{AUDIENCE}/api/1/partner_accounts',
     headers={
     'Authorization': 'Bearer ' + tesla_api_token,
     'Content-Type': 'application/json'
@@ -85,7 +90,7 @@ def callback():
         }
     )
 
-    app.logger.info(f"Info to enter into Tesla Custom component:\n \
+    app.logger.warning(f"Info to enter into Tesla Custom component:\n \
         Refresh token  : {BLUE}{req.json()['refresh_token']}{RESET}\n \
         Proxy URL      : {BLUE}https://{os.uname().nodename}{RESET}\n \
         SSL certificate: {BLUE}/share/tesla/selfsigned.pem{RESET}\n \

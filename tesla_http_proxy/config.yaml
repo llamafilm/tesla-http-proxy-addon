@@ -1,5 +1,5 @@
 name: "Tesla HTTP Proxy"
-version: "1.2.1"
+version: "1.2.2"
 slug: "tesla_http_proxy"
 description: "Proxy requests for Tesla Fleet API"
 url: "https://github.com/llamafilm/tesla-http-proxy-addon/tree/main/tesla_http_proxy"
@@ -18,11 +18,13 @@ options:
   client_secret: ""
   domain: ""
   regenerate_auth: true
+  region: "North America, Asia-Pacific"
 schema:
   client_id: str
   client_secret: password
   domain: match(^[a-z0-9-.]{1,253}$)
   regenerate_auth: bool
+  region: list(North America, Asia-Pacific|Europe, Middle East, Africa|China)
 ingress: true
 panel_icon: mdi:forward
 backup_exclude:
