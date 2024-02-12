@@ -5,27 +5,22 @@
     "postStartCommand": "bash devcontainer_bootstrap",
     "runArgs": ["-e", "GIT_EDITOR=code --wait", "--privileged"],
     "containerEnv": {
-      "WORKSPACE_DIRECTORY": "${containerWorkspaceFolder}"
+        "WORKSPACE_DIRECTORY": "${containerWorkspaceFolder}"
     },
     "customizations": {
-      "extensions": [
-        "ms-python.python",
-        "ms-python.vscode-pylance",
-        "timonwong.shellcheck", 
-        "esbenp.prettier-vscode"
-      ],
-      "mounts": [ "type=volume,target=/var/lib/docker" ],
-      "settings": {
-        "terminal.integrated.profiles.linux": {
-          "zsh": {
-            "path": "/usr/bin/zsh"
-          }
-        },
-        "terminal.integrated.defaultProfile.linux": "zsh",
-        "editor.formatOnPaste": false,
-        "editor.formatOnSave": true,
-        "editor.formatOnType": true,
-        "files.trimTrailingWhitespace": true
-      }
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "timonwong.shellcheck",
+                "esbenp.prettier-vscode"
+            ],
+            "settings": {
+                "editor.formatOnPaste": false,
+                "editor.formatOnSave": true,
+                "editor.formatOnType": true,
+                "files.trimTrailingWhitespace": true
+            }
+        }
     }
-  }
+}

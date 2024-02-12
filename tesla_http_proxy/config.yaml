@@ -25,7 +25,7 @@ schema:
   regenerate_auth: bool
 ingress: true
 panel_icon: mdi:forward
-backup_exclude: 
+backup_exclude:
   - /data/gnugpg
   - /data/password-store
 hassio_api: true
