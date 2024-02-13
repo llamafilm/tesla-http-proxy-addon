@@ -17,7 +17,7 @@ RUN unzip /tmp/main.zip -d /app
 WORKDIR /app/vehicle-command-main
 RUN go get ./... && \
   go build ./... && \
-  go install ./... 
+  go install ./...
 # installed to /root/go/bin/tesla-http-proxy
 
 # Python 3 HTTP Server serves the current working dir

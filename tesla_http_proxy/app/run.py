@@ -23,15 +23,18 @@ RESET = "\x1b[0m"
 
 # generate partner authentication token
 print('\n*** Generating Partner Authentication Token *** \n')
-headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-payload = {
-    'grant_type': 'client_credentials',
-    'client_id': CLIENT_ID,
-    'client_secret': CLIENT_SECRET,
-    'scope': SCOPES,
-    'audience': AUDIENCE
-}
-req = requests.post('https://auth.tesla.com/oauth2/v3/token', headers=headers, data=payload)
+
+req = requests.post('https://auth.tesla.com/oauth2/v3/token',
+    headers={
+        'Content-Type': 'application/x-www-form-urlencoded'},
+    data={
+        'grant_type': 'client_credentials',
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET,
+        'scope': SCOPES,
+        'audience': AUDIENCE
+    }
+)
 req.raise_for_status()
 tesla_api_token = req.json()['access_token']
 
@@ -39,8 +42,8 @@ tesla_api_token = req.json()['access_token']
 print('\n*** Registering Tesla account *** \n')
 req = requests.post(f'{AUDIENCE}/api/1/partner_accounts',
     headers={
-    'Authorization': 'Bearer ' + tesla_api_token,
-    'Content-Type': 'application/json'
+        'Authorization': 'Bearer ' + tesla_api_token,
+        'Content-Type': 'application/json'
     },
     data='{"domain": "%s"}' % DOMAIN
 )
