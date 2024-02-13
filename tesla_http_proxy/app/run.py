@@ -1,8 +1,13 @@
 import os
 import uuid
+import logging
 import requests
 from flask import Flask, request, render_template, cli
 from werkzeug.exceptions import HTTPException
+
+logging.basicConfig(format='[%(asctime)s] %(name)s:%(levelname)s: %(message)s',
+    level=logging.INFO, datefmt='%H:%M:%S')
+logger = logging.getLogger('main')
 
 app = Flask(__name__)
 
@@ -22,7 +27,7 @@ BLUE = "\u001b[34m"
 RESET = "\x1b[0m"
 
 # generate partner authentication token
-print('\n*** Generating Partner Authentication Token *** \n')
+logger.info('*** Generating Partner Authentication Token ***')
 
 req = requests.post('https://auth.tesla.com/oauth2/v3/token',
     headers={
@@ -35,11 +40,13 @@ req = requests.post('https://auth.tesla.com/oauth2/v3/token',
         'audience': AUDIENCE
     }
 )
-req.raise_for_status()
+if req.status_code >= 400:
+    logger.error("HTTP %s: %s", req.status_code, req.reason)
+logger.debug(req.text)
 tesla_api_token = req.json()['access_token']
 
 # register Tesla account to enable API access
-print('\n*** Registering Tesla account *** \n')
+logger.info('*** Registering Tesla account ***')
 req = requests.post(f'{AUDIENCE}/api/1/partner_accounts',
     headers={
         'Authorization': 'Bearer ' + tesla_api_token,
@@ -47,8 +54,10 @@ req = requests.post(f'{AUDIENCE}/api/1/partner_accounts',
     },
     data='{"domain": "%s"}' % DOMAIN
 )
-print(req.text)
-req.raise_for_status()
+if req.status_code >= 400:
+    logger.error("Error %s: %s", req.status_code, req.reason)
+logger.info(req.text)
+
 
 @app.errorhandler(Exception)
 def handle_exception(e):
@@ -71,7 +80,7 @@ def index():
 def callback():
     """Handle POST callback from Tesla server to complete OAuth"""
 
-    # app.logger.warning('callback args: %s' % request.args)
+    app.logger.debug('callback args: %s', request.args)
     # sometimes I don't get a valid code, not sure why
     try:
         code = request.args['code']
@@ -113,6 +122,6 @@ def shutdown():
     os._exit(0)
 
 if __name__ == '__main__':
-    print('\n*** Starting Flask server... *** \n')
+    logger.info('*** Starting Flask server... ***')
     cli.show_server_banner = lambda *_: None
     app.run(port=8099, debug=False, host='0.0.0.0')
