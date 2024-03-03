@@ -67,7 +67,12 @@ if [ -f /data/access_token ] || bashio::config.true regenerate_auth; then
   bashio::log.notice "Starting temporary Python app for authentication flow"
   python3 /app/run.py
   # disable this setting so the proxy launches immediately next time
-  bashio::addon.option regenerate_auth false
+  # this would be easier if bug is fixed: https://github.com/hassio-addons/bashio/issues/158
+  options=$(bashio::addon.options)
+  new_options=$(echo $options | jq .regenerate_auth=true)
+  payload=$(bashio::var.json options "^${new_options}")
+  bashio::api.supervisor POST "/addons/self/options" "${payload}"
+  curl -sH "Authorization: Bearer $SUPERVISOR_TOKEN" http://supervisor/addons/self/info | jq .data.options
 fi
 
 bashio::log.info "Starting Tesla HTTP Proxy"
