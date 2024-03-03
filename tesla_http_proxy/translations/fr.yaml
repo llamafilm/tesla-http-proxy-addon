@@ -10,7 +10,7 @@ configuration:
     description: Client Secret obtenu lors de la creation de l'application at developer.tesla.com
   domain:
     name: Nom de domaine pleinement qualifié (FQDN)
-    description: Lettre minuscule, sans https, i.e. `home.example.com`
+    description: Lettre minuscule, sans https, i.e. `tesla.example.com`
   regenerate_auth:
     name: Regénérer la paire de clés et le certificat
     description: Cette option est automatiquement désactivée après la première exécution

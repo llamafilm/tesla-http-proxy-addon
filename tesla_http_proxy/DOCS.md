@@ -37,13 +37,7 @@ Return to the add-on Web UI and click **Enroll public key in your vehicle**.  Th
 
 After that is complete, click **Shutdown Flask Server**.  Now the Tesla HTTPS proxy will start, and the `Regenerate auth` setting will be automatically disabled.
 
-Make requests from Home Assistant like this: 
-
-```
-curl --cacert /share/tesla/selfsigned.pem \
-    --header "Authorization: Bearer $TESLA_AUTH_TOKEN" \
-    "https://addon-tesla-http-proxy/api/1/vehicles"
-```
+Configure the [Tesla integration](https://github.com/alandtse/tesla) to use this proxy.
 
 ## Troubleshooting
 
@@ -66,3 +60,11 @@ You should have a config file at `/share/nginx_proxy/nginx_tesla.conf` that does
 This was tested with a 2021 Model 3 in the United States.  Other regions may require different endpoints.
 
 If you get `login_required` error when trying to send API commands, it's likely because you tried to reuse the refresh token more than once.  https://github.com/teslamotors/vehicle-command/issues/160
+
+To test the proxy, you can make requests from inside the Home Assistant container like this: 
+
+```
+curl --cacert /share/tesla/selfsigned.pem \
+    --header "Authorization: Bearer $TESLA_AUTH_TOKEN" \
+    "https://addon-tesla-http-proxy/api/1/vehicles"
+```
