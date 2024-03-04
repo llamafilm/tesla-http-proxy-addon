@@ -4,9 +4,9 @@
 
 You must be running the [Nginx SSL proxy add-on](https://github.com/home-assistant/addons/tree/master/nginx_proxy) because this add-on will add some custom config to that one.
 
-Your Home Assistant must have a publicly resolvable domain name with a valid SSL certificate and it must be on standard port 443.
+Your Home Assistant must have a domain name (fqdn) with a valid SSL certificate that resolves to a public IP reachable on standard port 443.
 
-You must create an additional DNS record that resolves to the same IP as Home Assistant.  For example, if Home Assistant is `home.example.com` then create `tesla.example.com` as an alias pointing to the same place.
+For Tesla to reach your server, you must create an additional DNS record that resolves to the public IP of your Home Assistant. For example, if Home Assistant is `home.example.com` then create `tesla.example.com` as an alias pointing to the same place.
 
 ## How to use
 
@@ -31,11 +31,11 @@ Start this add-on and wait for it to initialize.  It will fail with an error bec
 
 Restart this add-on and this time it should succeed.
 
-Open this add-on Web UI in the iOS Home Assistant app and click **Generate OAuth Token**.  This will launch a web browser where you authenticate with Tesla. The API refresh token is printed to the log.  Write this down as it will not be shown again after you restart the add-on.
+Using iOS or Android Home Assistant Companion app, navigate to this add-on, select **Web UI** and click **Generate OAuth Token**. This will launch a web browser where you authenticate with Tesla. The API refresh token is printed to the log. Write this down as it will not be shown again after you restart the add-on. Note: For Android, the previous steps should work otherwise please open an issue to let us know.
 
-Return to the add-on Web UI and click **Enroll public key in your vehicle**.  This will launch the Tesla app where it prompts for approval.
+Return to the Companion app add-on Web UI and click **Enroll public key in your vehicle**. This should launch the Tesla app where it prompts for approval. Note: Your Tesla app must be key-paired with the car otherwise the public key can't be added.
 
-After that is complete, click **Shutdown Flask Server**.  Now the Tesla HTTPS proxy will start, and the `Regenerate auth` setting will be automatically disabled.
+After that is complete, in the Companion app click **Shutdown Flask Server**.  The Flash server shutdown causes the app to display "add-on seems to not be ready", this is expected.  The Tesla HTTPS proxy has restarted, and the `Regenerate auth` setting will be automatically disabled.
 
 Configure the [Tesla integration](https://github.com/alandtse/tesla) to use this proxy.
 
