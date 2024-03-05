@@ -20,7 +20,7 @@ Request application access at [developer.tesla.com](https://developer.tesla.com)
 
 Tesla will provide a Client ID and Client Secret.  Enter these in add-on configuration.
 
-Customize the Nginx add-on configuration like this and then restart it
+Customize the Nginx add-on configuration like this, hit Save and then Restart it.
 ```
 active: true
 default: nginx_proxy_default*.conf
