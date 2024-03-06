@@ -64,7 +64,10 @@ If you get `login_required` error when trying to send API commands, it's likely 
 To test the proxy, you can make requests from inside the Home Assistant container like this: 
 
 ```
+# Assign Access Token from add-on
+TESLA_AUTH_TOKEN=$(docker exec -ti addon_c03d64a7_tesla_http_proxy cat access_token)
+
 curl --cacert /share/tesla/selfsigned.pem \
     --header "Authorization: Bearer $TESLA_AUTH_TOKEN" \
-    "https://addon-tesla-http-proxy/api/1/vehicles"
+    "https://c03d64a7-addon-tesla-http-proxy/api/1/vehicles"
 ```
