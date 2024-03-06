@@ -2,10 +2,10 @@
 set -e
 
 # read options
-export CLIENT_ID="$(bashio::config 'client_id')"
-export CLIENT_SECRET="$(bashio::config 'client_secret')"
-export DOMAIN="$(bashio::config 'domain')"
-export REGION="$(bashio::config 'region')"
+CLIENT_ID="$(bashio::config 'client_id')"; export CLIENT_ID
+CLIENT_SECRET="$(bashio::config 'client_secret')"; export CLIENT_SECRET
+DOMAIN="$(bashio::config 'domain')"; export DOMAIN
+REGION="$(bashio::config 'region')"; export REGION
 
 export GNUPGHOME=/data/gnugpg
 export PASSWORD_STORE_DIR=/data/password-store
@@ -43,6 +43,7 @@ generate_keypair() {
 # run on first launch only
 if ! pass > /dev/null 2>&1; then
   bashio::log.info "Setting up GnuPG and password-store"
+  # shellcheck disable=SC2174
   mkdir -m 700 -p /data/gnugpg
   gpg --batch --passphrase '' --quick-gen-key myself default default
   gpg --list-keys
@@ -69,7 +70,7 @@ if [ -f /data/access_token ] || bashio::config.true regenerate_auth; then
   # disable this setting so the proxy launches immediately next time
   # this would be easier if bug is fixed: https://github.com/hassio-addons/bashio/issues/158
   options=$(bashio::addon.options)
-  new_options=$(echo $options | jq .regenerate_auth=true)
+  new_options=$(echo "$options" | jq .regenerate_auth=true)
   payload=$(bashio::var.json options "^${new_options}")
   bashio::api.supervisor POST "/addons/self/options" "${payload}"
   curl -sH "Authorization: Bearer $SUPERVISOR_TOKEN" http://supervisor/addons/self/info | jq .data.options
