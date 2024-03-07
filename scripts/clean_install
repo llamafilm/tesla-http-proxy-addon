@@ -1,0 +1,13 @@
+#!/usr/bin/sh
+
+echo "Uninstalling Nginx addon..."
+ha addons uninstall core_nginx_proxy
+sudo rm -rf /tmp/supervisor_data/share/nginx_proxy/*
+echo "Installing Nginx addon..."
+ha addons install core_nginx_proxy
+
+echo Uninstalling Tesla HTTP Proxy addon...
+ha addons uninstall local_tesla_http_proxy
+sudo rm -rf /tmp/supervisor_data/share/tesla/*
+echo Installing Tesla HTTP Proxy addon...
+ha addons install local_tesla_http_proxy

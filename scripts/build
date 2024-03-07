@@ -1,8 +1,4 @@
 #!/usr/bin/sh
-if ha addons stats local_tesla_http_proxy >/dev/null; then
-    echo "Rebuilding addon..."
-    ha addons rebuild local_tesla_http_proxy
-else
-    echo "Installing addon..."
-    ha addons install local_tesla_http_proxy
-fi
+
+echo "Rebuilding addon..."
+ha addons rebuild local_tesla_http_proxy

@@ -55,7 +55,7 @@
     function restartAddon() {
         fetch('shutdown')
 
-        var timeleft = 10;
+        var timeleft = 10
         document.getElementById('main').innerHTML = `Waiting ${timeleft} seconds for addon to restart...`
         var downloadTimer = setInterval(function(){
             document.getElementById('main').innerHTML = `Waiting ${timeleft-1} seconds for addon to restart...`
@@ -63,10 +63,10 @@
                 // this universal link works in Safari but not in HA Companion app
                 // document.getElementById('main').innerHTML = '<a href="homeassistant://navigate/hassio/addon/{{slug}}/info"><button type="button">Return to Home Assistant</button></a>'
                 document.getElementById('main').innerHTML = 'All done!'
-                clearInterval(downloadTimer);
+                clearInterval(downloadTimer)
             }
-            timeleft -= 1;
-        }, 1000);
+            timeleft -= 1
+        }, 1000)
     }
 </script>
 </body>

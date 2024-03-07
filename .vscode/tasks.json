@@ -27,6 +27,20 @@
         "reveal": "always",
         "panel": "new"
       },
+    },
+    {
+      "label": "Clean Install Addon",
+      "type": "shell",
+      "command": "scripts/clean_install",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
     }
+
   ]
 }
