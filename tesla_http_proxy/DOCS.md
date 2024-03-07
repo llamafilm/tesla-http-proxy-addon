@@ -46,7 +46,7 @@ Configure the [Tesla integration](https://github.com/alandtse/tesla) to use this
 
 Check the add-on logs to see what's happening.
 
-From the add-on Web UI there is a link to test your public key HTTPS endpoint.  It should return the contents of your public key, similar to this:
+From the add-on Web UI there is a link to test your public key HTTPS endpoint.  On iOS this will cause a dialog about "trying to download a configuration profile" because it incorrectly identifies the public key as such.  On a desktop browser it should display the contents of your public key, similar to this:
 
 ```
 -----BEGIN PUBLIC KEY-----
