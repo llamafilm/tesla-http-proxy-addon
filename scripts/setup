@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+sudo apt install -y \
+  python3.11 \
+  python3-flask \
+  python3-requests

@@ -2,6 +2,7 @@
     "name": "Tesla HTTP Proxy add-on devcontainer",
     "image": "ghcr.io/home-assistant/devcontainer:addons",
     "appPort": ["7123:8123", "8099:8099"],
+    "postCreateCommand": "scripts/setup",
     "postStartCommand": "bash devcontainer_bootstrap",
     "runArgs": ["-e", "GIT_EDITOR=code --wait", "--privileged"],
     "containerEnv": {
@@ -17,7 +18,7 @@
             ],
             "settings": {
                 "editor.formatOnPaste": false,
-                "editor.formatOnSave": true,
+                "editor.formatOnSave": false,
                 "editor.formatOnType": true,
                 "files.trimTrailingWhitespace": true
             }

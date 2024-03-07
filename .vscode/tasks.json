@@ -14,6 +14,19 @@
         "panel": "new"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Rebuild Addon",
+      "type": "shell",
+      "command": "scripts/build",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
     }
   ]
 }
