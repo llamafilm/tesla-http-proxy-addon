@@ -12,7 +12,7 @@ configuration:
     name: Fully Qualified Domain Name
     description: Lowercase, without https, e.g. `tesla.example.com`
   regenerate_auth:
-    name: Regenerate keypair and certificate
+    name: Regenerate Tesla authentication
     description: This will be automatically disabled after first run
   region:
     name: Region

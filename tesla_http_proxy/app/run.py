@@ -2,7 +2,7 @@ import os
 import uuid
 import logging
 import requests
-from flask import Flask, request, render_template, cli
+from flask import  cli, Flask, Response, request, render_template
 from werkzeug.exceptions import HTTPException
 
 logging.basicConfig(format='[%(asctime)s] %(name)s:%(levelname)s: %(message)s',
@@ -43,7 +43,11 @@ req = requests.post('https://auth.tesla.com/oauth2/v3/token',
 if req.status_code >= 400:
     logger.error("HTTP %s: %s", req.status_code, req.reason)
 logger.debug(req.text)
-tesla_api_token = req.json()['access_token']
+try:
+    tesla_api_token = req.json()['access_token']
+except KeyError:
+    logger.error("Response did not include access token: %s", req.text)
+    os._exit(1)
 
 # register Tesla account to enable API access
 logger.info('*** Registering Tesla account ***')
@@ -62,6 +66,7 @@ logger.info(req.text)
 @app.errorhandler(Exception)
 def handle_exception(e):
     """Exception handler for HTTP requests"""
+
     app.logger.error(e)
     # pass through HTTP errors
     if isinstance(e, HTTPException):
@@ -70,11 +75,15 @@ def handle_exception(e):
     # now you're handling non-HTTP exceptions only
     return 'Unknown Error', 500
 
+
 @app.route('/')
 def index():
     """Web UI for add-on inside Home Assistant"""
-    return render_template('index.html', domain=DOMAIN, client_id=CLIENT_ID,
+
+    slug = os.uname().nodename.replace('-', '_')
+    return render_template('index.html', slug=slug, domain=DOMAIN, client_id=CLIENT_ID,
         scopes=SCOPES, randomstate=uuid.uuid4().hex, randomnonce=uuid.uuid4().hex)
+
 
 @app.route('/callback')
 def callback():
@@ -116,10 +125,24 @@ def callback():
 
     return render_template('callback.html')
 
+
 @app.route('/shutdown')
 def shutdown():
-    """Shutdown Flask server so the HTTP proxy can start"""
-    os._exit(0)
+    """Restart this addon so the HTTP proxy can start"""
+
+    response = Response('', 204)
+
+    @response.call_on_close
+    def on_close():
+        # this runs after returning the HTTP response
+        req = requests.post('http://supervisor/addons/self/restart',
+            headers={
+                'Authorization': f'Bearer {SUPERVISOR_TOKEN}'
+            })
+        logger.warning(req.text) # this line should never run
+
+    return response
+
 
 if __name__ == '__main__':
     logger.info('*** Starting Flask server... ***')

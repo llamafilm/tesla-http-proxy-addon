@@ -13,25 +13,61 @@
         }
         button {
             padding: 10px;
-            font-size: 14px;
+            font-size: 18px;
             width: 300px;
+        }
+
+        div#main {
+            transform: translateY(50%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: rgb(40, 40, 40);
+                color: rgb(200, 200, 200);
+            }
+            button {
+                background-color: black;
+                color: rgb(200, 200, 200);
+                border-color: rgb(40,40,40);
+            }
         }
     </style>
 </head>
 <body>
     <h2>Tesla HTTP Proxy add-on</h2>
     <hr>
-    <div class="content">
-        <a href="https://auth.tesla.com/oauth2/v3/authorize?&client_id={{client_id}}&locale=en-US&prompt=login&redirect_uri=https://{{domain}}/callback&response_type=code&scope={{scopes}}&state={{randomstate}}&nonce={{randomnonce}}" target="_blank"><button type="button">Generate OAuth token</button></a>
+    <div id="main">
+        <div class="content">
+            <a href="https://auth.tesla.com/oauth2/v3/authorize?&client_id={{client_id}}&locale=en-US&prompt=login&redirect_uri=https://{{domain}}/callback&response_type=code&scope={{scopes}}&state={{randomstate}}&nonce={{randomnonce}}" target="_blank"><button type="button">Generate OAuth token</button></a>
+        </div>
+        <div class="content">
+            <a href="https://tesla.com/_ak/{{domain}}" target="_blank"><button type="button">Enroll public key in your vehicle</button></a>
+        </div>
+        <div class="content">
+            <a href="https://{{domain}}/.well-known/appspecific/com.tesla.3p.public-key.pem" target="_blank"><button type="button">Test public key endpoint</button></a>
+        </div>
+        <div class="content">
+            <button type="button" onclick="restartAddon()">Restart this addon</button>
+        </div>
     </div>
-    <div class="content">
-        <a href="https://tesla.com/_ak/{{domain}}" target="_blank"><button type="button">Enroll public key in your vehicle</button></a>
-    </div>
-    <div class="content">
-        <a href="https://{{domain}}/.well-known/appspecific/com.tesla.3p.public-key.pem" target="_blank"><button type="button">Test public key endpoint</button></a>
-    </div>
-    <div class="content">
-        <a href="shutdown"><button type="button">Shutdown Flask server</button></a>
-    </div>
+<script>
+    function restartAddon() {
+        fetch('shutdown')
+
+        var timeleft = 10;
+        document.getElementById('main').innerHTML = `Waiting ${timeleft} seconds for addon to restart...`
+        var downloadTimer = setInterval(function(){
+            document.getElementById('main').innerHTML = `Waiting ${timeleft-1} seconds for addon to restart...`
+            if(timeleft <= 1){
+                // this universal link works in Safari but not in HA Companion app
+                // document.getElementById('main').innerHTML = '<a href="homeassistant://navigate/hassio/addon/{{slug}}/info"><button type="button">Return to Home Assistant</button></a>'
+                document.getElementById('main').innerHTML = 'All done!'
+                clearInterval(downloadTimer);
+            }
+            timeleft -= 1;
+        }, 1000);
+    }
+</script>
 </body>
 </html>

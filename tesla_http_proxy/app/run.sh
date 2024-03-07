@@ -15,11 +15,14 @@ generate_keypair() {
   if ping -c 1 core-nginx-proxy >/dev/null 2>&1; then
     bashio::log.info "Current Nginx configuration"
     bashio::addon.options core_nginx_proxy
+    echo
 
     bashio::log.info "Adding custom config to /share/nginx_proxy/nginx_tesla.conf"
     mkdir -p /share/nginx_proxy
     sed "s/__DOMAIN__/${DOMAIN}/g; s/__PROXYHOST__/${HOSTNAME}/g" /app/nginx_tesla.conf > /share/nginx_proxy/nginx_tesla.conf
     cat /share/nginx_proxy/nginx_tesla.conf
+  else
+    bashio::log.warning "Nginx is not installed"
   fi
 
   # generate self signed SSL certificate
@@ -64,17 +67,21 @@ else
   generate_keypair
 fi
 
-if [ -f /data/access_token ] || bashio::config.true regenerate_auth; then
-  bashio::log.notice "Starting temporary Python app for authentication flow"
-  python3 /app/run.py
-  # disable this setting so the proxy launches immediately next time
-  # this would be easier if bug is fixed: https://github.com/hassio-addons/bashio/issues/158
-  options=$(bashio::addon.options)
-  new_options=$(echo "$options" | jq .regenerate_auth=true)
-  payload=$(bashio::var.json options "^${new_options}")
-  bashio::api.supervisor POST "/addons/self/options" "${payload}"
-  curl -sH "Authorization: Bearer $SUPERVISOR_TOKEN" http://supervisor/addons/self/info | jq .data.options
-fi
+if [ -z "$CLIENT_ID" ]; then
+  bashio::log.notice "Request application access with Tesla, then fill in credentials and restart addon."
+else
+  if bashio::config.true regenerate_auth; then
+    bashio::log.notice "Starting temporary Python app for authentication flow"
+    python3 /app/run.py
+    # disable this setting so the proxy launches immediately next time
+    # this would be easier if bug is fixed: https://github.com/hassio-addons/bashio/issues/158
+    options=$(bashio::addon.options)
+    new_options=$(echo "$options" | jq .regenerate_auth=true)
+    payload=$(bashio::var.json options "^${new_options}")
+    bashio::api.supervisor POST "/addons/self/options" "${payload}"
+    curl -sH "Authorization: Bearer $SUPERVISOR_TOKEN" http://supervisor/addons/self/info | jq .data.options
+  fi
 
-bashio::log.info "Starting Tesla HTTP Proxy"
-/root/go/bin/tesla-http-proxy -keyring-debug -keyring-type pass -key-name myself -cert /data/cert.pem -tls-key /data/key.pem -port 443 -host 0.0.0.0 -verbose
+  bashio::log.info "Starting Tesla HTTP Proxy"
+  /root/go/bin/tesla-http-proxy -keyring-debug -keyring-type pass -key-name myself -cert /data/cert.pem -tls-key /data/key.pem -port 443 -host 0.0.0.0 -verbose
+fi

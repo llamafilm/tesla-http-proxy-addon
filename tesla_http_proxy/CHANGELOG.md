@@ -1,5 +1,13 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 1.3.0
+
+### Changed
+
+- Simplify config flow to avoid 502 error
+- Make credentials optional on first launch because Tesla requires public key before approving app request
+- Clarify instructions
+
 ## 1.2.2
 
 ### Changed

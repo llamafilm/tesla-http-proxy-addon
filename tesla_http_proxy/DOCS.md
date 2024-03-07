@@ -4,11 +4,13 @@
 
 You must be running the [Nginx SSL proxy add-on](https://github.com/home-assistant/addons/tree/master/nginx_proxy) because this add-on will add some custom config to that one.
 
-Your Home Assistant must have a publicly resolvable domain name with a valid SSL certificate and it must be on standard port 443.
+Your Home Assistant must have a domain name (FQDN) with a valid SSL certificate that resolves to a publicly reachable IP address on standard port 443.
 
 You must create an additional DNS record that resolves to the same IP as Home Assistant.  For example, if Home Assistant is `home.example.com` then create `tesla.example.com` as an alias pointing to the same place.
 
 ## How to use
+
+Configure your domain name, then start this add-on and wait for it to initialize.  After you see `BEGIN PUBLIC KEY` in the log, restart the Nginx addon so it loads the new config.  At this point your public key should be accessible at `https://tesla.example.com/.well-known/appspecific/com.tesla.3p.public-key.pem`, which is required for Tesla's verification process.
 
 Request application access at [developer.tesla.com](https://developer.tesla.com).  My request was approved immediately but YMMV.  This is currently free but it's possible they will monetize it in the future.  You will need to provide the following information:
 
@@ -18,24 +20,23 @@ Request application access at [developer.tesla.com](https://developer.tesla.com)
 - **Redirect URI**: Append `/callback` to the FQDN, e.g. `https://tesla.example.com/callback`
 - **Scopes**: `vehicle_device_data`, `vehicle_cmds`, `vehicle_charging_cmds`
 
-Tesla will provide a Client ID and Client Secret.  Enter these in add-on configuration.
+Tesla will provide a Client ID and Client Secret.  Enter these in addon configuration and then restart.
 
-Customize the Nginx add-on configuration like this and then restart it
+Customize the Nginx add-on configuration like this, hit Save, and then Restart it.  Ignore the error: _Failed to restart add-on_.
+
 ```
 active: true
 default: nginx_proxy_default*.conf
 servers: nginx_proxy/*.conf
 ```
 
-Start this add-on and wait for it to initialize.  It will fail with an error because Nginx is not configured correctly.
+Using iOS or Android Home Assistant Companion app, navigate to this add-on, select **Web UI** and click **Generate OAuth Token**. This will launch a web browser where you authenticate with Tesla. The API refresh token is printed to the log. Write this down as it will not be shown again after you restart the add-on.
+> Note: This was tested on iOS only.  If it doesn't work on Android please open an issue to let us know.
 
-Restart this add-on and this time it should succeed.
+Return to the Companion app addon Web UI and click **Enroll public key in your vehicle**.  This should launch the Tesla app where it prompts for approval.
+> Note: Your Tesla app must be key-paired with the car otherwise the public key can't be added.
 
-Open this add-on Web UI in the iOS Home Assistant app and click **Generate OAuth Token**.  This will launch a web browser where you authenticate with Tesla. The API refresh token is printed to the log.  Write this down as it will not be shown again after you restart the add-on.
-
-Return to the add-on Web UI and click **Enroll public key in your vehicle**.  This will launch the Tesla app where it prompts for approval.
-
-After that is complete, click **Shutdown Flask Server**.  Now the Tesla HTTPS proxy will start, and the `Regenerate auth` setting will be automatically disabled.
+After that is complete, in the Companion app click **Restart this addon**.  Now the Tesla HTTPS proxy should start, and the `Regenerate auth` setting will be automatically disabled.
 
 Configure the [Tesla integration](https://github.com/alandtse/tesla) to use this proxy.
 
@@ -61,10 +62,10 @@ This was tested with a 2021 Model 3 in the United States.  Other regions may req
 
 If you get `login_required` error when trying to send API commands, it's likely because you tried to reuse the refresh token more than once.  https://github.com/teslamotors/vehicle-command/issues/160
 
-To test the proxy, you can make requests from inside the Home Assistant container like this: 
+To test the proxy, you can make requests from inside the Home Assistant container like this:
 
 ```
 curl --cacert /share/tesla/selfsigned.pem \
     --header "Authorization: Bearer $TESLA_AUTH_TOKEN" \
-    "https://addon-tesla-http-proxy/api/1/vehicles"
+    "https://c03d64a7-addon-tesla-http-proxy/api/1/vehicles"
 ```

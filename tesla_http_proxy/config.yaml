@@ -1,5 +1,5 @@
 name: "Tesla HTTP Proxy"
-version: "1.2.4"
+version: "1.3.0"
 slug: "tesla_http_proxy"
 description: "Proxy requests for Tesla Fleet API"
 url: "https://github.com/llamafilm/tesla-http-proxy-addon/tree/main/tesla_http_proxy"
@@ -9,6 +9,7 @@ arch:
   - aarch64
   - amd64
   - i386
+hassio_role: homeassistant
 init: false
 map:
   - share:rw
@@ -20,8 +21,8 @@ options:
   regenerate_auth: true
   region: "North America, Asia-Pacific"
 schema:
-  client_id: str
-  client_secret: password
+  client_id: str?
+  client_secret: password?
   domain: match(^[a-z0-9-.]{1,253}$)
   regenerate_auth: bool
   region: list(North America, Asia-Pacific|Europe, Middle East, Africa|China)
