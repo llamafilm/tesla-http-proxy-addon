@@ -132,6 +132,24 @@ def shutdown():
 
     response = Response('', 204)
 
+    # disable regenerate_auth to skip Python code on next launch
+    req = requests.get('http://supervisor/addons/self/options/config',
+        headers={
+            'Authorization': f'Bearer {SUPERVISOR_TOKEN}'
+        }
+    )
+    options = req.json()['data']
+    options['regenerate_auth'] = False
+
+    req = requests.post('http://supervisor/addons/self/options',
+        headers={
+            'Authorization': f'Bearer {SUPERVISOR_TOKEN}'
+        },
+        json={
+            'options': options
+        }
+    )
+
     @response.call_on_close
     def on_close():
         # this runs after returning the HTTP response

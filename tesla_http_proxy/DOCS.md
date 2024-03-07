@@ -10,7 +10,17 @@ You must create an additional DNS record that resolves to the same IP as Home As
 
 ## How to use
 
-Configure your domain name, then start this add-on and wait for it to initialize.  After you see `BEGIN PUBLIC KEY` in the log, restart the Nginx addon so it loads the new config.  At this point your public key should be accessible at `https://tesla.example.com/.well-known/appspecific/com.tesla.3p.public-key.pem`, which is required for Tesla's verification process.
+Customize the Nginx add-on configuration like this and hit Save
+
+```
+active: true
+default: nginx_proxy_default*.conf
+servers: nginx_proxy/*.conf
+```
+
+Configure this addon with your domain name, then hit Start.  It will initialize and then stop itself after a few seconds.  Refresh the page to verify it's stopped, then restart the Nginx addon so it loads the new config. Ignore the error: _Failed to restart add-on_.
+
+At this point your public key should be accessible at `https://tesla.example.com/.well-known/appspecific/com.tesla.3p.public-key.pem`, which is required for Tesla's verification process.
 
 Request application access at [developer.tesla.com](https://developer.tesla.com).  My request was approved immediately but YMMV.  This is currently free but it's possible they will monetize it in the future.  You will need to provide the following information:
 
@@ -20,15 +30,7 @@ Request application access at [developer.tesla.com](https://developer.tesla.com)
 - **Redirect URI**: Append `/callback` to the FQDN, e.g. `https://tesla.example.com/callback`
 - **Scopes**: `vehicle_device_data`, `vehicle_cmds`, `vehicle_charging_cmds`
 
-Tesla will provide a Client ID and Client Secret.  Enter these in addon configuration and then restart.
-
-Customize the Nginx add-on configuration like this, hit Save, and then Restart it.  Ignore the error: _Failed to restart add-on_.
-
-```
-active: true
-default: nginx_proxy_default*.conf
-servers: nginx_proxy/*.conf
-```
+Tesla will provide a Client ID and Client Secret.  Enter these in addon configuration and then Start it again.
 
 Using iOS or Android Home Assistant Companion app, navigate to this add-on, select **Web UI** and click **Generate OAuth Token**. This will launch a web browser where you authenticate with Tesla. The API refresh token is printed to the log. Write this down as it will not be shown again after you restart the add-on.
 > Note: This was tested on iOS only.  If it doesn't work on Android please open an issue to let us know.
@@ -38,7 +40,7 @@ Return to the Companion app addon Web UI and click **Enroll public key in your v
 
 After that is complete, in the Companion app click **Restart this addon**.  Now the Tesla HTTPS proxy should start, and the `Regenerate auth` setting will be automatically disabled.
 
-Configure the [Tesla integration](https://github.com/alandtse/tesla) to use this proxy.
+Configure the [Tesla integration](https://github.com/alandtse/tesla) to use this proxy. It should pre-fill the Client ID and Secret for you by reading them from this addon.
 
 ## Troubleshooting
 
@@ -67,5 +69,5 @@ To test the proxy, you can make requests from inside the Home Assistant containe
 ```
 curl --cacert /share/tesla/selfsigned.pem \
     --header "Authorization: Bearer $TESLA_AUTH_TOKEN" \
-    "https://c03d64a7-addon-tesla-http-proxy/api/1/vehicles"
+    "https://c03d64a7-tesla-http-proxy/api/1/vehicles"
 ```
