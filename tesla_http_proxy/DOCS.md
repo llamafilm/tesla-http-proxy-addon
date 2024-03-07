@@ -38,7 +38,7 @@ Using iOS or Android Home Assistant Companion app, navigate to this add-on, sele
 Return to the Companion app addon Web UI and click **Enroll public key in your vehicle**.  This should launch the Tesla app where it prompts for approval.
 > Note: Your Tesla app must be key-paired with the car otherwise the public key can't be added.
 
-After that is complete, in the Companion app click **Restart this addon**.  Now the Tesla HTTPS proxy should start, and the `Regenerate auth` setting will be automatically disabled.
+After that is complete, in the addon Web UI click **Restart this addon**.  Now the Tesla HTTPS proxy should start, and the `Regenerate auth` setting will be automatically disabled.
 
 Configure the [Tesla integration](https://github.com/alandtse/tesla) to use this proxy. It should pre-fill the Client ID and Secret for you by reading them from this addon.
 
@@ -63,11 +63,3 @@ You should have a config file at `/share/nginx_proxy/nginx_tesla.conf` that does
 This was tested with a 2021 Model 3 in the United States.  Other regions may require different endpoints.
 
 If you get `login_required` error when trying to send API commands, it's likely because you tried to reuse the refresh token more than once.  https://github.com/teslamotors/vehicle-command/issues/160
-
-To test the proxy, you can make requests from inside the Home Assistant container like this:
-
-```
-curl --cacert /share/tesla/selfsigned.pem \
-    --header "Authorization: Bearer $TESLA_AUTH_TOKEN" \
-    "https://c03d64a7-tesla-http-proxy/api/1/vehicles"
-```
