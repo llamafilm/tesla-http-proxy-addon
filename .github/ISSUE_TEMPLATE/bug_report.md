@@ -29,7 +29,7 @@ If applicable, add screenshots to help explain your problem.
  - Addon version:
  - Region:
  - Vehicle model and year
- - Your public domain name
+ - Your public domain name. [Any issues related to TLS config will be closed if you don't provide the real domain name]
 
 **Logs**
 ```
