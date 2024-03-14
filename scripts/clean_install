@@ -11,3 +11,8 @@ ha addons uninstall local_tesla_http_proxy
 sudo rm -rf /tmp/supervisor_data/share/tesla/*
 echo Installing Tesla HTTP Proxy addon...
 ha addons install local_tesla_http_proxy
+
+echo "Installing Tesla Custom component..."
+sudo chmod 777 /tmp/supervisor_data/homeassistant
+git clone https://github.com/alandtse/tesla.git /tmp/supervisor_data/homeassistant/tesla
+ln -s tesla/custom_components /tmp/supervisor_data/homeassistant/custom_components
