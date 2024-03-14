@@ -1,7 +1,7 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM as builder
 
-RUN apk add --no-cache go
+RUN apk add --no-cache go git
 
 # install Tesla Go packages
 RUN git clone https://github.com/teslamotors/vehicle-command.git
