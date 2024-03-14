@@ -5,4 +5,4 @@ This add-on runs the official [Tesla HTTP Proxy](https://github.com/teslamotors/
 ## About
 Runs a temporary Flask web server to handle initial Tesla authorization flow and store the refresh token.  Once that is complete, it quits Flask and runs Tesla's HTTP Proxy code in Go.
 
-Setting this up is fairly complex.  Please read [DOCS.md](https://github.com/llamafilm/tesla-http-proxy-addon/blob/main/tesla_http_proxy/DOCS.md) for details.
+Setting this up is fairly complex.  Please read [DOCS.md](https://github.com/llamafilm/tesla-http-proxy-addon/blob/main/tesla_http_proxy/DOCS.md) for details.  If you need help, you can try starting a discussion on GitHub.  Please do not open an issue unless you've found a bug.
