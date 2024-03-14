@@ -5,7 +5,7 @@ RUN apk add --no-cache go git
 
 # install Tesla Go packages
 RUN git clone https://github.com/teslamotors/vehicle-command.git
-WORKDIR /go/vehicle-command
+WORKDIR /vehicle-command
 RUN git checkout 77d5cf3
 RUN go get ./... && \
   go build ./... && \
