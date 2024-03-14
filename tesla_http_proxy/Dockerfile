@@ -1,24 +1,28 @@
 ARG BUILD_FROM
+FROM $BUILD_FROM as builder
+
+RUN apk add --no-cache go
+
+# install Tesla Go packages
+RUN git clone https://github.com/teslamotors/vehicle-command.git
+WORKDIR /go/vehicle-command
+RUN git checkout 77d5cf3
+RUN go get ./... && \
+  go build ./... && \
+  go install ./...
+
 FROM $BUILD_FROM
+
+COPY --from=builder /go/bin/tesla-http-proxy /usr/bin/
 
 # install dependencies
 RUN apk add --no-cache \
   python3 \
   py3-flask \
   py3-requests \
-  go \
   gpg-agent \
   pass \
   openssl
-
-# install Tesla Go packages
-ADD https://github.com/teslamotors/vehicle-command/archive/refs/heads/main.zip /tmp
-RUN unzip /tmp/main.zip -d /app
-WORKDIR /app/vehicle-command-main
-RUN go get ./... && \
-  go build ./... && \
-  go install ./...
-# installed to /root/go/bin/tesla-http-proxy
 
 # Python 3 HTTP Server serves the current working dir
 WORKDIR /data

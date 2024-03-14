@@ -1,5 +1,15 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 1.3.2
+
+### Added
+
+- Support `window_control` with vehicle-command 77d5cf3
+
+### Changed
+
+- Reduce image size by using separate build stage
+
 ## 1.3.1
 
 ### Changed
