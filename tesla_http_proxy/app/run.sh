@@ -39,7 +39,7 @@ generate_keypair() {
 
   # Generate keypair
   bashio::log.info "Generating keypair"
-  /root/go/bin/tesla-keygen -f -keyring-type pass -key-name myself create > /share/tesla/com.tesla.3p.public-key.pem
+  /usr/bin/tesla-keygen -f -keyring-type pass -key-name myself create > /share/tesla/com.tesla.3p.public-key.pem
   cat /share/tesla/com.tesla.3p.public-key.pem
 }
 

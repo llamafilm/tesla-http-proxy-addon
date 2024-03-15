@@ -14,6 +14,7 @@ RUN go get ./... && \
 FROM $BUILD_FROM
 
 COPY --from=builder /root/go/bin/tesla-http-proxy /usr/bin/
+COPY --from=builder /root/go/bin/tesla-keygen /usr/bin
 
 # install dependencies
 RUN apk add --no-cache \
