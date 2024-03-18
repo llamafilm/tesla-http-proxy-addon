@@ -119,12 +119,13 @@ def callback():
         Client ID      : {BLUE}{CLIENT_ID}\n{RESET}")
 
     req.raise_for_status()
+    response = req.json()
     with open('/data/refresh_token', 'w') as f:
-        f.write(req.json()['refresh_token'])
+        f.write(response['refresh_token'])
     with open('/data/access_token', 'w') as f:
-        f.write(req.json()['access_token'])
+        f.write(response['access_token'])
 
-    return render_template('callback.html')
+    return render_template('callback.html', refresh_token=response['refresh_token'])
 
 
 @app.route('/shutdown')

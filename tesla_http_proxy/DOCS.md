@@ -35,12 +35,12 @@ Tesla will provide a Client ID and Client Secret.  Enter these in addon configur
 Using iOS or Android Home Assistant Companion app, navigate to this add-on, select **Web UI** and click **Generate OAuth Token**. This will launch a web browser where you authenticate with Tesla. The API refresh token is printed to the log. Write this down as it will not be shown again after you restart the add-on.
 > Note: This was tested on iOS only.  If it doesn't work on Android please open an issue to let us know.
 
-Return to the Companion app addon Web UI and click **Enroll public key in your vehicle**.  This should launch the Tesla app where it prompts for approval.
+Return to the Companion app addon Web UI and click **Enroll public key in your vehicle**.  This should launch the Tesla app where it prompts for approval.  If you have multiple vehicles, you'll need to do this on all of them.
 > Note: Your Tesla app must be key-paired with the car otherwise the public key can't be added.
 
 After that is complete, in the addon Web UI click **Restart this addon**.  Now the Tesla HTTPS proxy should start, and the `Regenerate auth` setting will be automatically disabled.
 
-Configure the [Tesla integration](https://github.com/alandtse/tesla) to use this proxy. It should pre-fill the Client ID and Secret for you by reading them from this addon.
+Configure the [Tesla integration](https://github.com/alandtse/tesla) to use this proxy. It should pre-fill the Client ID and Secret for you by reading them from this addon, and the refresh token should be on your clipboard.
 
 ## Troubleshooting
 

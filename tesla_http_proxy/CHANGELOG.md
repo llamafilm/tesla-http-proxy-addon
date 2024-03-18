@@ -1,5 +1,13 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 1.3.4
+
+### Changed
+
+- Fail early if public key doesn't work
+- Add scopes for energy sites (untested)
+- Copy refresh token to clipboard to simplify auth flow
+
 ## 1.3.3
 
 ### Added
