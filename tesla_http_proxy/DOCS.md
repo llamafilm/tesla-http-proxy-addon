@@ -26,9 +26,9 @@ Request application access at [developer.tesla.com](https://developer.tesla.com)
 
 - Name of your legal entity (first and last name is fine)
 - App Name, Description, Purpose (can be anything)
+- Allow all scopes
 - **Allowed Origin**: matching the FQDN of your Home Assistant server.  Must be lowercase, e.g. `https://tesla.example.com`
 - **Redirect URI**: Append `/callback` to the FQDN, e.g. `https://tesla.example.com/callback`
-- **Scopes**: `vehicle_device_data`, `vehicle_cmds`, `vehicle_charging_cmds`
 
 Tesla will provide a Client ID and Client Secret.  Enter these in addon configuration and then Start it again.
 
