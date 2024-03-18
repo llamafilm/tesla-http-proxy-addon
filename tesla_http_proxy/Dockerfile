@@ -23,6 +23,7 @@ RUN apk add --no-cache \
   py3-requests \
   gpg-agent \
   pass \
+  curl \
   openssl
 
 # Python 3 HTTP Server serves the current working dir

@@ -47,7 +47,7 @@ try:
     tesla_api_token = req.json()['access_token']
 except KeyError:
     logger.error("Response did not include access token: %s", req.text)
-    os._exit(1)
+    raise SystemExit(1)
 
 # register Tesla account to enable API access
 logger.info('*** Registering Tesla account ***')
@@ -60,6 +60,7 @@ req = requests.post(f'{AUDIENCE}/api/1/partner_accounts',
 )
 if req.status_code >= 400:
     logger.error("Error %s: %s", req.status_code, req.reason)
+    raise SystemExit(1)
 logger.info(req.text)
 
 
