@@ -1,5 +1,12 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 1.3.5
+
+### Changed
+
+- Nginx: ignore bad requests without logging
+- Remove supervisor dependency, to allow running as standalone Docker container
+
 ## 1.3.4
 
 ### Changed

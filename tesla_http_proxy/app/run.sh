@@ -2,10 +2,13 @@
 set -e
 
 # read options
-CLIENT_ID="$(bashio::config 'client_id')"; export CLIENT_ID
-CLIENT_SECRET="$(bashio::config 'client_secret')"; export CLIENT_SECRET
-DOMAIN="$(bashio::config 'domain')"; export DOMAIN
-REGION="$(bashio::config 'region')"; export REGION
+# you can pass in these variables if running without supervisor
+if [ -n "${HASSIO_TOKEN:-}" ]; then
+  CLIENT_ID="$(bashio::config 'client_id')"; export CLIENT_ID
+  CLIENT_SECRET="$(bashio::config 'client_secret')"; export CLIENT_SECRET
+  DOMAIN="$(bashio::config 'domain')"; export DOMAIN
+  REGION="$(bashio::config 'region')"; export REGION
+fi
 
 export GNUPGHOME=/data/gnugpg
 export PASSWORD_STORE_DIR=/data/password-store
