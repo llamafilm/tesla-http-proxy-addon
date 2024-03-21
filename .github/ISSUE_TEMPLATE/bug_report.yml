@@ -17,6 +17,14 @@ body:
       value: |
         ## Environment
   - type: input
+    id: addon_version
+    validations:
+      required: true
+    attributes:
+      label: What version of the addon are you using?
+      description: >
+        Can be found in: Settings ⇒ Addons ⇒ Tesla HTTP Proxy.
+  - type: input
     validations:
       required: true
     attributes:
@@ -24,11 +32,6 @@ body:
       placeholder: core-
       description: >
         Can be found in: Settings ⇒ System ⇒ Repairs ⇒ Three Dots in Upper Right ⇒ System information.
-  - type: input
-    attributes:
-      label: What version of Tesla integration are you using?
-      description: >
-        Can be found in: HACS ⇒ Integrations ⇒ Tesla. (if applicabale)
   - type: dropdown
     validations:
       required: true
@@ -42,13 +45,10 @@ body:
         - Home Assistant Supervised
         - Home Assistant Core
   - type: input
-    id: addon_version
-    validations:
-      required: true
     attributes:
-      label: What version of the addon are you using?
+      label: What version of Tesla integration are you using?
       description: >
-        Can be found in: Settings ⇒ Addons ⇒ Tesla HTTP Proxy.
+        Can be found in: HACS ⇒ Integrations ⇒ Tesla. (if applicabale)
   - type: dropdown
     validations:
       required: true
@@ -69,7 +69,7 @@ body:
     attributes:
       label: What is your domain name (FQDN)?
       description: >
-        This field is required for help with anything related to DNS or TLS.  Your
+        This field is required for help related to DNS or TLS.  Your
         public IP is likely being scanned by Chinese bots already, so there is
         no reason to hide it.
   - type: markdown
