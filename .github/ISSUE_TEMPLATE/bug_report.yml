@@ -14,7 +14,8 @@ body:
         Provide a clear and concise description of what you did and what happened.
   - type: markdown
     attributes:
-      value: ## Environment
+      value: |
+        ## Environment
   - type: input
     validations:
       required: true
@@ -24,7 +25,6 @@ body:
       description: >
         Can be found in: Settings ⇒ System ⇒ Repairs ⇒ Three Dots in Upper Right ⇒ System information.
   - type: input
-    validations:
     attributes:
       label: What version of Tesla integration are you using?
       description: >
@@ -74,12 +74,13 @@ body:
         no reason to hide it.
   - type: markdown
     attributes:
-      value: ## Details
+      value: |
+        ## Details
   - type: textarea
     attributes:
       label: Paste the log output from the addon here
       description: Please redact tokens, but nothing else
-      render: txt
+      render: text
   - type: textarea
     attributes:
       label: Any additional context or screenshots that help explain the issue
