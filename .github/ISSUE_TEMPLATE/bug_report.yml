@@ -1,0 +1,85 @@
+name: Bug report
+about: Report an issue with the plugin
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue form is for reporting bugs only!  Please use Discussions for support.
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: The problem
+      description: >-
+        Provide a clear and concise description of what you did and what happened.
+  - type: markdown
+    attributes:
+      value: ## Environment
+  - type: input
+    validations:
+      required: true
+    attributes:
+      label: What version of Home Assistant Core are you using?
+      placeholder: core-
+      description: >
+        Can be found in: Settings ⇒ System ⇒ Repairs ⇒ Three Dots in Upper Right ⇒ System information.
+  - type: input
+    validations:
+    attributes:
+      label: What version of Tesla integration are you using?
+      description: >
+        Can be found in: HACS ⇒ Integrations ⇒ Tesla. (if applicabale)
+  - type: dropdown
+    validations:
+      required: true
+    attributes:
+      label: What type of installation are you running?
+      description: >
+        Can be found in: Settings ⇒ System ⇒ Repairs ⇒ Three Dots in Upper Right ⇒ System information.
+      options:
+        - Home Assistant OS
+        - Home Assistant Container
+        - Home Assistant Supervised
+        - Home Assistant Core
+  - type: input
+    id: addon_version
+    validations:
+      required: true
+    attributes:
+      label: What version of the addon are you using?
+      description: >
+        Can be found in: Settings ⇒ Addons ⇒ Tesla HTTP Proxy.
+  - type: dropdown
+    validations:
+      required: true
+    attributes:
+      label: What region of Tesla API are you using?
+      options:
+        - North America, Asia-Pacific
+        - Europe, Middle East
+        - China
+  - type: input
+    validations:
+      required: true
+    attributes:
+      label: What model and year is your vehicle?
+  - type: input
+    validations:
+      required: true
+    attributes:
+      label: What is your domain name (FQDN)?
+      description: >
+        This field is required for help with anything related to DNS or TLS.  Your
+        public IP is likely being scanned by Chinese bots already, so there is
+        no reason to hide it.
+  - type: markdown
+    attributes:
+      value: ## Details
+  - type: textarea
+    attributes:
+      label: Paste the log output from the addon here
+      description: Please redact tokens, but nothing else
+      render: txt
+  - type: textarea
+    attributes:
+      label: Any additional context or screenshots that help explain the issue
