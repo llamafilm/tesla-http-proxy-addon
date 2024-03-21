@@ -24,7 +24,7 @@ docker run --rm --name nginx -d -p 4430:443 -e DOMAIN="$DOMAIN" --network tesla 
 
 # start proxy container
 docker rm -f tesla_http_proxy
-docker run --rm --name tesla_http_proxy -p 8099:8099 --network tesla \
+docker run --rm --name tesla_http_proxy -p 8099:8099 -p 443:443 --network tesla \
     -v ./share:/share \
     -v ./bashio:/tmp/.bashio:ro \
     -e DOMAIN="${DOMAIN}" \

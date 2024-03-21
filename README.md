@@ -50,3 +50,4 @@ If you are not running HAOS, the proxy can run separately as a Docker container.
 - Set environment variables in `secrets.env`
 - Run `start_proxy.sh`
 - Start OAuth at http://localhost:8099 and it will callback to https://DOMAIN/callback
+- After getting the token, edit `addons.self.options.config.cache` to change true to false and then restart
