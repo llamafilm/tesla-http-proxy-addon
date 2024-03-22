@@ -1,5 +1,11 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 1.3.7
+
+### Changed
+
+- Log better error message when "registering Tesla account"
+
 ## 1.3.6
 
 ### Changed

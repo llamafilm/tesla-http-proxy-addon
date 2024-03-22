@@ -59,7 +59,7 @@ req = requests.post(f'{AUDIENCE}/api/1/partner_accounts',
     data='{"domain": "%s"}' % DOMAIN
 )
 if req.status_code >= 400:
-    logger.error("Error %s: %s", req.status_code, req.reason)
+    logger.error("Error %s: %s", req.status_code, req.text)
     raise SystemExit(1)
 logger.info(req.text)
 
