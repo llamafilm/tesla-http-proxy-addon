@@ -86,48 +86,6 @@ def index():
         scopes=SCOPES, randomstate=uuid.uuid4().hex, randomnonce=uuid.uuid4().hex)
 
 
-@app.route('/callback')
-def callback():
-    """Handle POST callback from Tesla server to complete OAuth"""
-
-    app.logger.debug('callback args: %s', request.args)
-    # sometimes I don't get a valid code, not sure why
-    try:
-        code = request.args['code']
-    except KeyError:
-        app.logger.error('args: %s', request.args)
-        return 'Invalid code!', 400
-
-    # Exchange code for refresh_token
-    req = requests.post('https://auth.tesla.com/oauth2/v3/token',
-        headers={
-            'Content-Type': 'application/x-www-form-urlencoded'},
-        data={
-            'grant_type': 'authorization_code',
-            'client_id': CLIENT_ID,
-            'client_secret': CLIENT_SECRET,
-            'code': code,
-            'audience': AUDIENCE,
-            'redirect_uri': f"https://{DOMAIN}/callback"
-        }
-    )
-
-    app.logger.warning(f"Info to enter into Tesla Custom component:\n \
-        Refresh token  : {BLUE}{req.json()['refresh_token']}{RESET}\n \
-        Proxy URL      : {BLUE}https://{os.uname().nodename}{RESET}\n \
-        SSL certificate: {BLUE}/share/tesla/selfsigned.pem{RESET}\n \
-        Client ID      : {BLUE}{CLIENT_ID}\n{RESET}")
-
-    req.raise_for_status()
-    response = req.json()
-    with open('/data/refresh_token', 'w') as f:
-        f.write(response['refresh_token'])
-    with open('/data/access_token', 'w') as f:
-        f.write(response['access_token'])
-
-    return render_template('callback.html', refresh_token=response['refresh_token'])
-
-
 @app.route('/shutdown')
 def shutdown():
     """Restart this addon so the HTTP proxy can start"""
