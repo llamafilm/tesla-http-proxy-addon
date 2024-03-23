@@ -1,5 +1,16 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2.0.0
+
+### Changed
+
+- Run Web UI as a separate s6-rc service so it's always available
+- Simplify nginx config so it no longer needs to access port 8099
+
+## Removed
+
+- Removed OAuth flow.  Use a separate app to obtain refresh token.
+
 ## 1.3.7
 
 ### Changed

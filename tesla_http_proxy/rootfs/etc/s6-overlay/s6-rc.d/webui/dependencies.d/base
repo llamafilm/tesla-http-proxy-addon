@@ -1,0 +1,1 @@
+The existence of this file tells s6-rc to only start webui when all the base services are ready: it prevents race conditions.

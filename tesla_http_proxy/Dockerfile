@@ -30,7 +30,7 @@ RUN apk add --no-cache \
 WORKDIR /data
 
 # Copy data for add-on
-COPY /app /app
+COPY rootfs /
 RUN chmod a+x /app/run.sh
 
 CMD [ "/app/run.sh" ]
