@@ -1,6 +1,9 @@
 #!/command/with-contenv bashio
 set -e
 
+# wait for webui.py to avoid interleaved log output
+sleep 2
+
 # read options
 # you can pass in these variables if running without supervisor
 if [ -n "${HASSIO_TOKEN:-}" ]; then

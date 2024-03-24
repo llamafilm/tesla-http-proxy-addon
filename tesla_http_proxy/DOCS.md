@@ -50,3 +50,5 @@ servers: nginx_proxy/*.conf
 This was tested with a 2021 Model 3 in the United States.  Other regions may require different endpoints.
 
 If you get `login_required` error when trying to send API commands, it's likely because you tried to reuse the refresh token more than once.  Try fully removing the Tesla integration from HA and adding it back again.
+
+When you enroll the public key in the vehicle, if you don't get a prompt, try moving within BLE range of the vehicle.

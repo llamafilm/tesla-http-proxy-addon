@@ -7,9 +7,9 @@
 - Run Web UI as a separate s6-rc service so it's always available
 - Simplify nginx config so it no longer needs to access port 8099
 
-## Removed
+### Removed
 
-- Removed OAuth flow.  Use a separate app to obtain refresh token.
+- Removed OAuth flow because it was too complicated for most users to setup.  Use a separate app to obtain refresh token.
 
 ## 1.3.7
 

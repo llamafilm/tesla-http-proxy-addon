@@ -1,6 +1,5 @@
 import os
 import logging
-import time
 from flask import cli, Flask, render_template
 from werkzeug.exceptions import HTTPException
 
@@ -34,8 +33,6 @@ def index():
 
 
 if __name__ == '__main__':
-    # wait for run.sh to avoid interleaved logs
-    time.sleep(3)
     logger.info('Starting Flask server for Web UI...')
     cli.show_server_banner = lambda *_: None
     app.run(port=8099, debug=False, host='0.0.0.0')
