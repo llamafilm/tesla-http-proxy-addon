@@ -8,6 +8,9 @@ configuration:
   client_secret:
     name: Client Secret
     description: Client Secret obtenu lors de la creation de l'application at developer.tesla.com
+  debug:
+    name: Journalisation du débogage
+    description: Imprimer des messages détaillés dans le journal pour le débogage
   domain:
     name: Nom de domaine pleinement qualifié (FQDN)
     description: Lettre minuscule, sans https, i.e. `tesla.example.com`

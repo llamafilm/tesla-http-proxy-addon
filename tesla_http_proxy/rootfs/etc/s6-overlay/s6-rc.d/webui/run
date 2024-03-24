@@ -4,6 +4,7 @@
 # you can pass in these variables if running without supervisor
 if [ -n "${HASSIO_TOKEN:-}" ]; then
   DOMAIN="$(bashio::config 'domain')"; export DOMAIN
+  DEBUG="$(bashio::config 'debug')"; export DEBUG
 fi
 
 python3 /app/webui.py

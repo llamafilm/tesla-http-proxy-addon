@@ -11,6 +11,7 @@ if [ -n "${HASSIO_TOKEN:-}" ]; then
   CLIENT_SECRET="$(bashio::config 'client_secret')"; export CLIENT_SECRET
   DOMAIN="$(bashio::config 'domain')"; export DOMAIN
   REGION="$(bashio::config 'region')"; export REGION
+  DEBUG="$(bashio::config 'debug')"; export DEBUG
 fi
 
 export GNUPGHOME=/data/gnugpg
@@ -89,5 +90,9 @@ else
   fi
 
   bashio::log.info "Starting Tesla HTTP Proxy"
-  /usr/bin/tesla-http-proxy -keyring-debug -keyring-type pass -key-name myself -cert /data/cert.pem -tls-key /data/key.pem -port 443 -host 0.0.0.0 -verbose
+  if bashio::config.true debug; then
+    /usr/bin/tesla-http-proxy -keyring-debug -keyring-type pass -key-name myself -cert /data/cert.pem -tls-key /data/key.pem -port 443 -host 0.0.0.0 -verbose
+  else
+    /usr/bin/tesla-http-proxy -keyring-debug -keyring-type pass -key-name myself -cert /data/cert.pem -tls-key /data/key.pem -port 443 -host 0.0.0.0
+  fi
 fi

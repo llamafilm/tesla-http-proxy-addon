@@ -2,21 +2,26 @@ import os
 import logging
 import requests
 
-logging.basicConfig(format='[%(asctime)s] %(name)s:%(levelname)s: %(message)s',
-    level=logging.INFO, datefmt='%H:%M:%S')
-logger = logging.getLogger('auth')
-
 SUPERVISOR_TOKEN = os.environ['SUPERVISOR_TOKEN']
 CLIENT_ID = os.environ['CLIENT_ID']
 CLIENT_SECRET = os.environ['CLIENT_SECRET']
 DOMAIN = os.environ['DOMAIN']
 REGION = os.environ['REGION']
+DEBUG = os.environ['DEBUG']
 SCOPES = 'openid offline_access vehicle_device_data vehicle_cmds vehicle_charging_cmds energy_device_data energy_cmds'
 AUDIENCE = {
     'North America, Asia-Pacific': 'https://fleet-api.prd.na.vn.cloud.tesla.com',
     'Europe, Middle East, Africa': 'https://fleet-api.prd.eu.vn.cloud.tesla.com',
     'China'                      : 'https://fleet-api.prd.cn.vn.cloud.tesla.cn'
 }[REGION]
+
+if DEBUG == 'true':
+    log_level = logging.DEBUG
+else:
+    log_level = logging.INFO
+logging.basicConfig(format='[%(asctime)s] %(name)s:%(levelname)s: %(message)s',
+    level=log_level, datefmt='%H:%M:%S')
+logger = logging.getLogger('auth')
 
 # generate partner authentication token
 logger.info('Generating Partner Authentication Token')
@@ -53,7 +58,7 @@ req = requests.post(f'{AUDIENCE}/api/1/partner_accounts',
 if req.status_code >= 400:
     logger.error("Error %s: %s", req.status_code, req.text)
     raise SystemExit(1)
-logger.info(req.text)
+logger.debug(req.text)
 
 # disable regenerate_auth to skip Python code on next launch
 req = requests.get('http://supervisor/addons/self/options/config',

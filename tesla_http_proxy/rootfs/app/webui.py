@@ -3,13 +3,18 @@ import logging
 from flask import cli, Flask, render_template
 from werkzeug.exceptions import HTTPException
 
-logging.basicConfig(format='[%(asctime)s] %(name)s:%(levelname)s: %(message)s',
-    level=logging.INFO, datefmt='%H:%M:%S')
-logger = logging.getLogger('webui')
-
 app = Flask(__name__)
 
 DOMAIN = os.environ['DOMAIN']
+DEBUG = os.environ['DEBUG']
+
+if DEBUG == 'true':
+    log_level = logging.DEBUG
+else:
+    log_level = logging.INFO
+logging.basicConfig(format='[%(asctime)s] %(name)s:%(levelname)s: %(message)s',
+    level=log_level, datefmt='%H:%M:%S')
+logger = logging.getLogger('webui')
 
 @app.errorhandler(Exception)
 def handle_exception(e):
