@@ -17,5 +17,4 @@ configuration:
   region:
     name: Région
 network:
-  8099/tcp: Serveur Web temporaire utilisé que pour la configuration initiale
   443/tcp: HTTPS Proxy pour le Fleet API

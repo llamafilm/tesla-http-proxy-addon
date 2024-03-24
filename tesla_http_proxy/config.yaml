@@ -35,5 +35,4 @@ hassio_api: true
 stage: experimental
 ports:
   443/tcp: 4430
-  8099/tcp: 8099
 image: "ghcr.io/llamafilm/tesla_http_proxy_{arch}"
