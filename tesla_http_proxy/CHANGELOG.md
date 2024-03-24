@@ -1,5 +1,11 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2.1.1
+
+### Added
+
+- Add debug config option to control log level
+
 ## 2.0.0
 
 ### Changed
