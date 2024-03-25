@@ -15,6 +15,7 @@ Request application access at [developer.tesla.com](https://developer.tesla.com)
 - Name of your legal entity (first and last name is fine)
 - App Name, Description, Purpose (can be anything)
 - Allow all scopes
+- **OAuth Grant Type**: Authorization code and machine-to-machine
 - **Allowed Origin**: The FQDN where you are hosting the public key.  Must be lowercase, e.g. `https://tesla.example.com`
 - **Redirect URI**: Append `/callback` to the FQDN, e.g. `https://tesla.example.com/callback`
 
