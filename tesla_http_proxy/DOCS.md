@@ -21,10 +21,11 @@ Request application access at [developer.tesla.com](https://developer.tesla.com)
 
 Tesla will provide a Client ID and Client Secret.  Enter these in addon configuration and then Start it again.  Now the `regenerate auth` setting will be automatically disabled.
 
+Use the [Tesla Auth app](https://apps.apple.com/us/app/auth-app-for-tesla/id1552058613) to obtain a refresh token, by entering your Callback URL, Client ID, and Client Secret on the Fleet API page.
+> In addition to creating a refresh token, this step also authorizes your Client ID to access your Tesla account the first time it runs.
+
 Using the Home Assistant iOS app, open the Addon Web UI and click **Enroll public key in your vehicle**.  This should launch the Tesla app where it prompts for approval to "allow third-party access to your vehicle".  If you have multiple vehicles, you'll need to do this on all of them.
 > Note: Your Tesla app must be key-paired with the car otherwise the public key can't be added.
-
-Use the [Tesla Auth app](https://apps.apple.com/us/app/auth-app-for-tesla/id1552058613) to obtain a refresh token, by entering your Callback URL, Client ID, and Client Secret on the Fleet API page.
 
 Configure the [Tesla integration](https://github.com/alandtse/tesla) to use this proxy. It should pre-fill the Client ID, URL, and certificate for you by reading them from this addon.
 
