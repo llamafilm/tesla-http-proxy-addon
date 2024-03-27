@@ -4,6 +4,8 @@
 
 You must have a domain name (FQDN) with a valid SSL certificate to host your public key on standard port 443.  The vehicle will check this key every time you send a command.  The easiest way to do this is using [Nginx SSL proxy add-on](https://github.com/home-assistant/addons/tree/master/nginx_proxy).  This guide will use `tesla.example.com` as an example.
 
+One thing to note is that if you are using the `Nginx SSL proxy add-on` as it is suggested here, you will need to make sure that in the Configuration section of the Nginx add-on the setting under `Customize` called `active` is set to `true` instead of `false`. By default, it will be set to `false` and that will make it such that Nginx will not import the new server configuration blocks that will be added in a later step.
+
 ## How to use
 
 Configure this addon with your domain name, then hit Start.  It will initialize and then stop itself after a few seconds.  Refresh the page to verify it's stopped, then restart the Nginx addon so it loads the new config. Ignore the error: _Failed to restart add-on_.
