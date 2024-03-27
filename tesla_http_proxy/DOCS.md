@@ -4,11 +4,20 @@
 
 You must have a domain name (FQDN) with a valid SSL certificate to host your public key on standard port 443.  The vehicle will check this key every time you send a command.  The easiest way to do this is using [Nginx SSL proxy add-on](https://github.com/home-assistant/addons/tree/master/nginx_proxy).  This guide will use `tesla.example.com` as an example.
 
+Configure Nginx to use extra conf files by putting this into the **Customize** field in that addon config:
+
+```yml
+active: true
+default: nginx_proxy_default*.conf
+servers: nginx_proxy/*.conf
+```
+
 ## How to use
 
-Configure this addon with your domain name, then hit Start.  It will initialize and then stop itself after a few seconds.  Refresh the page to verify it's stopped, then restart the Nginx addon so it loads the new config. Ignore the error: _Failed to restart add-on_.
+Configure this addon with your domain name, then hit Start.  It will initialize and then stop itself after a few seconds.  Refresh the page to verify it stopped, then restart the Nginx addon so it loads the new config. Ignore the error: _Failed to restart add-on_.
 
-At this point your public key should be visible at `https://tesla.example.com/.well-known/appspecific/com.tesla.3p.public-key.pem`, which is required for Tesla's verification process.  If this doesn't work, or if it shows any TLS certificate errors, you must fix that before proceeding further.
+> [!IMPORTANT]
+> At this point your public key should be visible at `https://tesla.example.com/.well-known/appspecific/com.tesla.3p.public-key.pem`, which is required for Tesla's verification process.  If this doesn't work, or if it shows any TLS certificate errors, you must fix that before proceeding further.
 
 Request application access at [developer.tesla.com](https://developer.tesla.com).  My request was approved immediately but YMMV.  This is currently free but it's possible they will monetize it in the future.  You will need to provide the following information:
 
@@ -21,11 +30,14 @@ Request application access at [developer.tesla.com](https://developer.tesla.com)
 
 Tesla will provide a Client ID and Client Secret.  Enter these in addon configuration and then Start it again.  Now the `regenerate auth` setting will be automatically disabled.
 
-Use the [Tesla Auth app](https://apps.apple.com/us/app/auth-app-for-tesla/id1552058613) to obtain a refresh token, by entering your Callback URL, Client ID, and Client Secret on the Fleet API page.
-> In addition to creating a refresh token, this step also authorizes your Client ID to access your Tesla account the first time it runs.
+Use the [Tesla Auth app](https://apps.apple.com/us/app/auth-app-for-tesla/id1552058613) to obtain a refresh token, by entering your Callback URL, Client ID, and Client Secret on the Fleet API page. This will open a webpage that asks for your Tesla account credentials.
 
-Using the Home Assistant iOS app, open the Addon Web UI and click **Enroll public key in your vehicle**.  This should launch the Tesla app where it prompts for approval to "allow third-party access to your vehicle".  If you have multiple vehicles, you'll need to do this on all of them.
-> Note: Your Tesla app must be key-paired with the car otherwise the public key can't be added.
+> [!TIP]
+> The first time you request a refresh token, it will also prompt to authorize your Client ID to access your Tesla account. Allow all scopes.
+
+Using the Home Assistant iOS app, open the Addon Web UI and click **Enroll public key in your vehicle**.  This should launch the Tesla app where it prompts for approval to "allow third-party access to your vehicle".  If you have multiple vehicles, you'll need to do this on each of them.
+> [!NOTE]
+> Your Tesla app must already be key-paired with the car.
 
 Configure the [Tesla integration](https://github.com/alandtse/tesla) to use this proxy. It should pre-fill the Client ID, URL, and certificate for you by reading them from this addon.
 
@@ -42,12 +54,7 @@ nxjvrm2M6uKfDEYS52ITVVbzqGMzzbKCO/tuu78432jU6Z96BNR8NSoRXg==
 -----END PUBLIC KEY-----
 ```
 
-You should have a config file at `/share/nginx_proxy/nginx_tesla.conf` that hosts the static public key file.  You may need to modify this file depending on your SSL config.  By default, the Nginx SSL Proxy will use wildcard conf files inside this directory, but if you've changed it, you may need to put it back like this:
-```
-active: false
-default: nginx_proxy_default*.conf
-servers: nginx_proxy/*.conf
-```
+You should have a config file at `/share/nginx_proxy/nginx_tesla.conf` that hosts the static public key file.  You may need to modify this file depending on your SSL config.  
 
 This was tested with a 2021 Model 3 in the United States.  Other regions may require different endpoints.
 
