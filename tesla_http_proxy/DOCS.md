@@ -130,6 +130,9 @@ nxjvrm2M6uKfDEYS52ITVVbzqGMzzbKCO/tuu78432jU6Z96BNR8NSoRXg==
 
 - Make sure to read open discussions to see if anyone has similar problems to you.
 
+- Make sure to delete all the old files generated (both for certificates and Tesla HTTP Proxy under shared/tesla) when changing configuration, then rebuild them
+
+
 ## Additional notes
 
 ### Tested with
