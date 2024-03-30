@@ -68,7 +68,7 @@ domains:
   - "*.ha.example.com"
   - tesla.example.com
   - homeassistant-internal.example.com
-email: null@null.com
+email: your-email@domain.com
 keyfile: privkey.pem
 certfile: fullchain.pem
 challenge: dns
@@ -119,7 +119,7 @@ nxjvrm2M6uKfDEYS52ITVVbzqGMzzbKCO/tuu78432jU6Z96BNR8NSoRXg==
 -----END PUBLIC KEY-----
 ```
 
-- You should have a config file at `/share/nginx_proxy/nginx_tesla.conf` that hosts the static public key file. You may need to modify this file depending on your SSL config.
+- You should have a config file at `/share/nginx_proxy/nginx_tesla.conf` that has path of the file which hosts the static public key file. You may need to modify this file depending on your SSL config.
 
 - If you get `login_required` error when trying to send API commands, it's likely because you tried to reuse the refresh token more than once. Try fully removing the Tesla integration from HA and adding it back again.
 
@@ -128,10 +128,9 @@ nxjvrm2M6uKfDEYS52ITVVbzqGMzzbKCO/tuu78432jU6Z96BNR8NSoRXg==
 - The refresh token of the fleet-api is relatively short compared to the one for the one used for the old api. Make sure it is similar to this
   `EU_03b5055f7daa4584f95d6169bd1237eaebe1603c2111e5ec3dbb1ea788cf2d21`
 
-- Make sure to read open discussions to see if anyone has similar problems to you.
+- Make sure to read open [discussions](https://github.com/llamafilm/tesla-http-proxy-addon/discussions) to see if anyone has similar problems to you.
 
 - Make sure to delete all the old files generated (both for certificates and Tesla HTTP Proxy under shared/tesla) when changing configuration, then rebuild them
-
 
 ## Additional notes
 
