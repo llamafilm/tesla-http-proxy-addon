@@ -14,6 +14,9 @@ This repository contains the following add-ons
 ![Supports armv7 Architecture][armv7-shield]
 ![Supports i386 Architecture][i386-shield]
 
+![Reported Installations][installations-shield-stable]
+
+
 <!--
 Notes to developers after forking or using the github template feature:
 - While developing comment out the 'image' key from 'example/config.yaml' to make the supervisor build the addon
@@ -51,3 +54,5 @@ If you are not running HAOS, the proxy can run separately as a Docker container.
 - Run `start_proxy.sh`
 - Start OAuth at http://localhost:8099 and it will callback to https://DOMAIN/callback
 - After getting the token, edit `addons.self.options.config.cache` to change true to false and then restart
+
+[installations-shield-stable]: https://img.shields.io/badge/dynamic/json?url=https://analytics.home-assistant.io/addons.json&query=$["c03d64a7_tesla_http_proxy"].total&label=Reported%20Installations&link=https://analytics.home-assistant.io/add-ons
