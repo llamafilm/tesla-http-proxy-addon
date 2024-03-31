@@ -17,8 +17,7 @@ servers: nginx_proxy/*.conf
 
 Configure this addon with your domain name, then hit Start.  It will initialize and then stop itself after a few seconds.  Refresh the page to verify it stopped, then restart the Nginx addon so it loads the new config. Ignore the error: _Failed to restart add-on_.
 
-> [!IMPORTANT]
-> At this point your public key should be visible at `https://tesla.example.com/.well-known/appspecific/com.tesla.3p.public-key.pem`, which is required for Tesla's verification process.  If this doesn't work, or if it shows any TLS certificate errors, you must fix that before proceeding further.
+At this point your public key should be visible at `https://tesla.example.com/.well-known/appspecific/com.tesla.3p.public-key.pem`, which is required for Tesla's verification process.  If this doesn't work, or if it shows any TLS certificate errors, you must fix that before proceeding further.
 
 Request application access at [developer.tesla.com](https://developer.tesla.com).  My request was approved immediately but YMMV.  This is currently free but it's possible they will monetize it in the future.  You will need to provide the following information:
 
@@ -33,12 +32,9 @@ Tesla will provide a Client ID and Client Secret.  Enter these in addon configur
 
 Open the Web UI of this addon and click **Login to Tesla account**.  After authenticating, it will redirect to your callback URL which doesn't exist, so you'll see an error like *404 not found*.  That's normal.  Copy the URL from that page and paste it into the text field on the Web UI, then click **Generate token from URL**.  The refresh token will be printed to the log and also copied to your clipboard for later use.
 
-> [!TIP]
-> The first time you request a refresh token, it will also prompt to authorize your Client ID to access your Tesla account. Allow all scopes.
+> Tip: The first time you request a refresh token, it will also prompt to authorize your Client ID to access your Tesla account. Allow all scopes.
 
-Using the Home Assistant iOS app, open the Addon Web UI and click **Enroll public key in your vehicle**.  This should launch the Tesla app where it prompts for approval to "allow third-party access to your vehicle".  If you have multiple vehicles, you'll need to do this on each of them.
-> [!NOTE]
-> Your Tesla app must already be key-paired with the car.
+Using the Home Assistant iOS app, open the Addon Web UI and click **Enroll public key in your vehicle**.  This should launch the Tesla app where it prompts for approval to "allow third-party access to your vehicle".  If you have multiple vehicles, you'll need to do this on each of them. Your Tesla app must already be key-paired with the car.
 
 Configure the [Tesla integration](https://github.com/alandtse/tesla) to use this proxy. It should pre-fill the Client ID, URL, and certificate for you by reading them from this addon.
 
