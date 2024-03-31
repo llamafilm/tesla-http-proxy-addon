@@ -3,9 +3,9 @@
 ## Prerequisites
 
 You must have a domain name (FQDN) with a valid SSL certificate to host your public key on standard port 443.  The vehicle will check this key every time you send a command.  The easiest way to do this is using [Nginx SSL proxy add-on](https://github.com/home-assistant/addons/tree/master/nginx_proxy).  This guide will use `tesla.example.com` as an example.
-If you're already using your domain name to host Home Asisstant, you'll need to create a new CNAME record for `tesla.example.com` that points to it, and an SSL certificate for both.  I recommend making a wildcard certificate using Lets Encrypt.
+If you're already hosting Home Assistant on your domain, you'll need to create a new CNAME record for `tesla.example.com` that points to it, and an SSL certificate for both.  I recommend making a wildcard certificate using Lets Encrypt.
 
-Configure Nginx to use extra conf files by putting this into the **Customize** field in that addon config:
+Configure Nginx to use extra conf files by putting this into the **Customize** field in that addon's config:
 
 ```yml
 active: true
@@ -29,9 +29,9 @@ Request application access at [developer.tesla.com](https://developer.tesla.com)
 - **Allowed Origin**: The FQDN where you are hosting the public key.  Must be lowercase, e.g. `https://tesla.example.com`
 - **Redirect URI**: Append `/callback` to the FQDN, e.g. `https://tesla.example.com/callback`
 
-Tesla will provide a Client ID and Client Secret.  Enter these in addon configuration and then Start it again.  Now the `regenerate auth` setting will be automatically disabled.
+Tesla will provide a Client ID and Client Secret.  Enter these in addon configuration and then Start it again.  Now the `regenerate_auth` setting will be automatically disabled.
 
-Use the [Tesla Auth app](https://apps.apple.com/us/app/auth-app-for-tesla/id1552058613) to obtain a refresh token, by entering your Callback URL, Client ID, and Client Secret on the Fleet API page. This will open a webpage that asks for your Tesla account credentials.
+Open the Web UI of this addon and click **Login to Tesla account**.  After authenticating, it will redirect to your callback URL which doesn't exist, so you'll see an error like *404 not found*.  That's normal.  Copy the URL from that page and paste it into the text field on the Web UI, then click **Generate token from URL**.  The refresh token will be printed to the log and also copied to your clipboard for later use.
 
 > [!TIP]
 > The first time you request a refresh token, it will also prompt to authorize your Client ID to access your Tesla account. Allow all scopes.
@@ -44,21 +44,8 @@ Configure the [Tesla integration](https://github.com/alandtse/tesla) to use this
 
 ## Troubleshooting
 
-Check the add-on logs to see what's happening.
+Enable debug mode and check the add-on logs to see what's happening.
 
-From the add-on Web UI there is a link to test your public key HTTPS endpoint.  On iOS this will cause a dialog about "trying to download a configuration profile" because it incorrectly identifies the public key as such.  On a desktop browser it should display the contents of your public key, similar to this:
+Check the [Wiki](https://github.com/llamafilm/tesla-http-proxy-addon/wiki) for common errors and solutions found by other users.
 
-```
------BEGIN PUBLIC KEY-----
-MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEcCTVZI7gyAGiVq2jdBjg4MOiXxsh
-nxjvrm2M6uKfDEYS52ITVVbzqGMzzbKCO/tuu78432jU6Z96BNR8NSoRXg==
------END PUBLIC KEY-----
-```
-
-You should have a config file at `/share/nginx_proxy/nginx_tesla.conf` that hosts the static public key file.  You may need to modify this file depending on your SSL config.  
-
-This was tested with a 2021 Model 3 in the United States.  Other regions may require different endpoints.
-
-If you get `login_required` error when trying to send API commands, it's likely because you tried to reuse the refresh token more than once.  Try fully removing the Tesla integration from HA and adding it back again.
-
-When you enroll the public key in the vehicle, if you don't get a prompt, try moving within BLE range of the vehicle.
+Feel free to write a new Wiki page if you have been successful at setting this up in a novel way.

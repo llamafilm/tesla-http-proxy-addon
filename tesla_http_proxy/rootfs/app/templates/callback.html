@@ -1,0 +1,46 @@
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0">
+    <style>
+        div {
+            text-align:center;
+            padding-top:50px;
+            font-family: sans-serif;
+        }
+        button {
+            font-size: 18px;
+        }
+        div#refresh_token {
+            word-wrap: break-word;
+            font-family: monospace;
+            margin: 0px 20px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: rgb(40, 40, 40);
+                color: rgb(200, 200, 200);
+            }
+            button {
+                background-color: black;
+                color: rgb(200, 200, 200);
+                border-color: rgb(40,40,40);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content">Authorization complete.  Refresh token is shown below and will be copied to clipboard when you click the button.</div>
+    <div class="content" id="refresh_token">{{refresh_token}}</div>
+    <div>
+        <button type="button" onclick="goback()">Return to Home Assistant</button>
+    </div>
+<script>
+function goback() {
+    var copyText = document.getElementById("refresh_token");
+    navigator.clipboard.writeText(copyText.innerText);
+    window.open('homeassistant://navigate')
+}
+</script>
+</body>
+</html>

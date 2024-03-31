@@ -1,5 +1,15 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2.2.0
+
+### Added
+
+- Add webpage to generate refresh tokens
+
+### Changed
+
+- Move troubleshooting steps to wiki page
+
 ## 2.1.1
 
 ### Added

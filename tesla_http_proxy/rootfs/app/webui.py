@@ -1,12 +1,28 @@
 import os
 import logging
-from flask import cli, Flask, render_template
+import random
+import string
+from urllib.parse import urlparse, parse_qs
+from flask import cli, Flask, render_template, request
 from werkzeug.exceptions import HTTPException
+import requests
+
+from const import (
+    SCOPES,
+    AUDIENCES,
+)
 
 app = Flask(__name__)
 
 DOMAIN = os.environ['DOMAIN']
 DEBUG = os.environ['DEBUG']
+CLIENT_ID = os.environ['CLIENT_ID']
+CLIENT_SECRET = os.environ['CLIENT_SECRET']
+REGION = os.environ['REGION']
+AUDIENCE = AUDIENCES[REGION]
+
+BLUE = "\u001b[34m"
+RESET = "\x1b[0m"
 
 if DEBUG == 'true':
     log_level = logging.DEBUG
@@ -34,7 +50,53 @@ def index():
     """Web UI for add-on inside Home Assistant"""
 
     slug = os.uname().nodename.replace('-', '_')
-    return render_template('index.html', slug=slug, domain=DOMAIN)
+    randomstate = ''.join(random.choices(string.hexdigits.lower(), k=10))
+    randomnonce = ''.join(random.choices(string.hexdigits.lower(), k=10))
+
+    return render_template('index.html', slug=slug, domain=DOMAIN, client_id=CLIENT_ID,
+        scopes=SCOPES, randomstate=randomstate, randomnonce=randomnonce)
+
+
+@app.route('/callback')
+def callback():
+    """Handle callback from Tesla server to complete OAuth"""
+
+    url = request.args.get('callback_url')
+    app.logger.debug('Callback URL: %s', url)
+    # sometimes I don't get a valid code, not sure why
+    try:
+        parsed_url = urlparse(url)
+        query_params = parse_qs(parsed_url.query)
+        code = query_params['code'][0]
+        app.logger.debug('code: %s', code)
+    except KeyError:
+        return 'Invalid code!', 400
+
+    # Exchange code for refresh_token
+    req = requests.post('https://auth.tesla.com/oauth2/v3/token',
+        headers={
+            'Content-Type': 'application/x-www-form-urlencoded'},
+        data={
+            'grant_type': 'authorization_code',
+            'client_id': CLIENT_ID,
+            'client_secret': CLIENT_SECRET,
+            'code': code,
+            'audience': AUDIENCE,
+            'redirect_uri': f"https://{DOMAIN}/callback"
+        }
+    )
+    if req.status_code >= 400:
+        logger.error("HTTP %s: %s", req.status_code, req.reason)
+    response = req.json()
+    refresh_token = response['refresh_token']
+    app.logger.warning("Obtained refresh token: %s", refresh_token)
+
+    with open('/data/refresh_token', 'w') as f:
+        f.write(response['refresh_token'])
+    with open('/data/access_token', 'w') as f:
+        f.write(response['access_token'])
+
+    return render_template('callback.html', refresh_token=refresh_token)
 
 
 if __name__ == '__main__':

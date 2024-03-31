@@ -5,6 +5,9 @@
 if [ -n "${HASSIO_TOKEN:-}" ]; then
   DOMAIN="$(bashio::config 'domain')"; export DOMAIN
   DEBUG="$(bashio::config 'debug')"; export DEBUG
+  CLIENT_ID="$(bashio::config 'client_id')"; export CLIENT_ID
+  CLIENT_SECRET="$(bashio::config 'client_secret')"; export CLIENT_SECRET
+  REGION="$(bashio::config 'region')"; export REGION
 fi
 
 python3 /app/webui.py
