@@ -33,13 +33,12 @@
     <div class="content">Authorization complete.  Refresh token is shown below and will be copied to clipboard when you click the button.</div>
     <div class="content" id="refresh_token">{{refresh_token}}</div>
     <div>
-        <button type="button" onclick="goback()">Return to Home Assistant</button>
+        <button type="button" onclick="goback()">OK</button>
     </div>
 <script>
 function goback() {
     var copyText = document.getElementById("refresh_token");
     navigator.clipboard.writeText(copyText.innerText);
-    window.open('homeassistant://navigate')
 }
 </script>
 </body>
