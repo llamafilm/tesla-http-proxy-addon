@@ -2,16 +2,24 @@
 
 ## Prerequisites
 
-You must have a domain name (FQDN) with a valid SSL certificate to host your public key on standard port 443.  The vehicle will check this key every time you send a command.  The easiest way to do this is using [Nginx SSL proxy add-on](https://github.com/home-assistant/addons/tree/master/nginx_proxy).  This guide will use `tesla.example.com` as an example.
-If you're already hosting Home Assistant on your domain, you'll need to create a new CNAME record for `tesla.example.com` that points to it, and an SSL certificate for both.  I recommend making a wildcard certificate using Lets Encrypt.
+You must have a domain name (FQDN) with a valid SSL certificate to host your public key on standard port 443.  The vehicle will check this key every time you send a command.
+For advanced users, there are many ways to set this up, but this guide assumes Home Assistant is accessible at `https://home.example.com` using [Nginx SSL proxy](https://github.com/home-assistant/addons/blob/master/nginx_proxy/DOCS.md). Add an additional `A` or `CNAME` record for `tesla.example.com` pointing to the same IP address, and an SSL certificate.  You can use [Lets Encrypt](https://github.com/home-assistant/addons/blob/master/letsencrypt/DOCS.md) to make a wildcard certificate that covers both.
 
-Configure Nginx to use extra conf files by putting this into the **Customize** field in that addon's config:
-
+Configure Nginx like this:
 ```yml
-active: true
-default: nginx_proxy_default*.conf
-servers: nginx_proxy/*.conf
+domain: home.example.com
+hsts: max-age=31536000; includeSubDomains
+certfile: fullchain.pem
+keyfile: privkey.pem
+cloudflare: false
+customize:
+  active: true
+  default: nginx_proxy_default*.conf
+  servers: nginx_proxy/*.conf
 ```
+
+The `home.example.com` domain is not used by this addon so it doesn't matter what you enter there; The next steps will add an additional config file to host the public key at `tesla.example.com`.
+
 
 ## How to use
 
