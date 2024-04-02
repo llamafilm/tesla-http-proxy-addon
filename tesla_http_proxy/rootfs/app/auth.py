@@ -5,6 +5,7 @@ import requests
 from const import (
     SCOPES,
     AUDIENCES,
+    TESLA_AUTH_ENDPOINTS,
 )
 
 SUPERVISOR_TOKEN = os.environ['SUPERVISOR_TOKEN']
@@ -14,6 +15,8 @@ DOMAIN = os.environ['DOMAIN']
 REGION = os.environ['REGION']
 DEBUG = os.environ['DEBUG']
 AUDIENCE = AUDIENCES[REGION]
+TESLA_AUTH_ENDPOINT = TESLA_AUTH_ENDPOINTS[REGION]
+
 
 if DEBUG == 'true':
     log_level = logging.DEBUG
@@ -26,7 +29,7 @@ logger = logging.getLogger('auth')
 # generate partner authentication token
 logger.info('Generating Partner Authentication Token')
 
-req = requests.post('https://auth.tesla.com/oauth2/v3/token',
+req = requests.post(f"{TESLA_AUTH_ENDPOINT}/oauth2/v3/token",
     headers={
         'Content-Type': 'application/x-www-form-urlencoded'},
     data={

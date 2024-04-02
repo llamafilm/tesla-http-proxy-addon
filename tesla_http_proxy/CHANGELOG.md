@@ -1,5 +1,12 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2.2.3
+
+### Changed
+
+- Use `.cn` endpoints in China
+- Nginx returns 404 on `/` location
+
 ## 2.2.0
 
 ### Added

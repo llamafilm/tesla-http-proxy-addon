@@ -1,5 +1,5 @@
 name: "Tesla HTTP Proxy"
-version: "2.2.2"
+version: "2.2.3"
 slug: "tesla_http_proxy"
 description: "Proxy requests for Tesla Fleet API"
 url: "https://github.com/llamafilm/tesla-http-proxy-addon/tree/main/tesla_http_proxy"

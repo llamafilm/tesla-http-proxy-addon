@@ -70,7 +70,7 @@
 <script>
     function login() {
         window.alert('After logging into your Tesla account, you will see a "Page not found" error.  Copy that URL and paste it into the text box below.')
-        window.open("https://auth.tesla.com/oauth2/v3/authorize?&client_id={{client_id}}&locale=en-US&prompt=login&redirect_uri=https://{{domain}}/callback&response_type=code&scope={{scopes}}&state={{randomstate}}&nonce={{randomnonce}}", "_blank")
+        window.open("{{auth_endpoint}}/oauth2/v3/authorize?&client_id={{client_id}}&prompt=login&redirect_uri=https://{{domain}}/callback&response_type=code&scope={{scopes}}&state={{randomstate}}&nonce={{randomnonce}}", "_blank")
     }
 </script>
 </html>

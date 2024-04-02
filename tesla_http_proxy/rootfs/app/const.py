@@ -6,3 +6,13 @@ AUDIENCES = {
     'Europe, Middle East, Africa': 'https://fleet-api.prd.eu.vn.cloud.tesla.com',
     'China'                      : 'https://fleet-api.prd.cn.vn.cloud.tesla.cn'
 }
+TESLA_AUTH_ENDPOINTS = {
+    'North America, Asia-Pacific': 'https://auth.tesla.com',
+    'Europe, Middle East, Africa': 'https://auth.tesla.com',
+    'China'                      : 'https://auth.tesla.cn'
+}
+TESLA_AK_ENDPOINTS = {
+    'North America, Asia-Pacific': 'https://tesla.com',
+    'Europe, Middle East, Africa': 'https://tesla.com',
+    'China'                      : 'https://tesla.cn'
+}

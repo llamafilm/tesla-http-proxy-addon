@@ -10,6 +10,8 @@ import requests
 from const import (
     SCOPES,
     AUDIENCES,
+    TESLA_AUTH_ENDPOINTS,
+    TESLA_AK_ENDPOINTS,
 )
 
 app = Flask(__name__)
@@ -20,6 +22,8 @@ CLIENT_ID = os.environ['CLIENT_ID']
 CLIENT_SECRET = os.environ['CLIENT_SECRET']
 REGION = os.environ['REGION']
 AUDIENCE = AUDIENCES[REGION]
+TESLA_AUTH_ENDPOINT = TESLA_AUTH_ENDPOINTS[REGION]
+TESLA_AK_ENDPOINT = TESLA_AK_ENDPOINTS[REGION]
 
 BLUE = "\u001b[34m"
 RESET = "\x1b[0m"
@@ -54,7 +58,8 @@ def index():
     randomnonce = ''.join(random.choices(string.hexdigits.lower(), k=10))
 
     return render_template('index.html', slug=slug, domain=DOMAIN, client_id=CLIENT_ID,
-        scopes=SCOPES, randomstate=randomstate, randomnonce=randomnonce)
+        scopes=SCOPES, randomstate=randomstate, randomnonce=randomnonce,
+        auth_endpoint=TESLA_AUTH_ENDPOINT, ak_endpoint=TESLA_AK_ENDPOINT)
 
 
 @app.route('/callback')
@@ -73,7 +78,7 @@ def callback():
         return 'Invalid code!', 400
 
     # Exchange code for refresh_token
-    req = requests.post('https://auth.tesla.com/oauth2/v3/token',
+    req = requests.post(f"{TESLA_AUTH_ENDPOINT}/oauth2/v3/token",
         headers={
             'Content-Type': 'application/x-www-form-urlencoded'},
         data={
