@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-You must have a domain name (FQDN) with a valid SSL certificate to host your public key on standard port 443.  The vehicle will check this key every time you send a command.
+You must have a domain name (FQDN) with a valid SSL certificate to host your public key on standard port 443.  The service running on this port (Nginx) must be accessible 7/24 for the vehicle to download that key *every time* a command is sent.
 For advanced users, there are many ways to set this up, but this guide assumes Home Assistant is accessible at `https://home.example.com` using [Nginx SSL proxy](https://github.com/home-assistant/addons/blob/master/nginx_proxy/DOCS.md). Add an additional `A` or `CNAME` record for `tesla.example.com` pointing to the same IP address, and an SSL certificate.  You can use [Lets Encrypt](https://github.com/home-assistant/addons/blob/master/letsencrypt/DOCS.md) to make a wildcard certificate that covers both.
 
 Configure Nginx like this:
