@@ -3,11 +3,11 @@
 ## Prerequisites
 
 You must have a domain name (FQDN) with a valid SSL certificate to host your public key on standard port 443.  The service running on this port (Nginx) must be accessible 7/24 for the vehicle to download that key *every time* a command is sent.
-For advanced users, there are many ways to set this up, but this guide assumes Home Assistant is accessible at `https://home.example.com` using [Nginx SSL proxy](https://github.com/home-assistant/addons/blob/master/nginx_proxy/DOCS.md). Add an additional `A` or `CNAME` record for `tesla.example.com` pointing to the same IP address, and an SSL certificate.  You can use [Lets Encrypt](https://github.com/home-assistant/addons/blob/master/letsencrypt/DOCS.md) to make a wildcard certificate that covers both.
+For advanced users, there are many ways to set this up, but this guide assumes Home Assistant is accessible at least locally at `https://ha.example.com` using [Nginx SSL proxy](https://github.com/home-assistant/addons/blob/master/nginx_proxy/DOCS.md). Add an additional `A` or `CNAME` record for `tesla.example.com` pointing to the same IP address, and an SSL certificate.  You can use [Lets Encrypt](https://github.com/home-assistant/addons/blob/master/letsencrypt/DOCS.md) to make a wildcard certificate that covers both.
 
 Configure Nginx like this:
 ```yml
-domain: home.example.com
+domain: ha.example.com
 hsts: max-age=31536000; includeSubDomains
 certfile: fullchain.pem
 keyfile: privkey.pem
@@ -18,7 +18,7 @@ customize:
   servers: nginx_proxy/*.conf
 ```
 
-The `home.example.com` domain is not used by this addon so it doesn't matter what you enter there; The next steps will add an additional config file to host the public key at `tesla.example.com`.
+The `ha.example.com` domain is not used by this addon so it doesn't matter what you enter there; The next steps will add an additional config file to host the public key at `tesla.example.com`.
 
 
 ## How to use
