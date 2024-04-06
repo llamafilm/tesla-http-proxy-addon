@@ -33,4 +33,3 @@ docker run --rm --name tesla_http_proxy -p 8099:8099 -p 443:443 --network tesla 
     -e REGION="${REGION}" \
     -e SUPERVISOR_TOKEN="fake-token" \
     ghcr.io/llamafilm/tesla_http_proxy_${ARCH}:1.3.6
-
