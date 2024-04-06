@@ -9,6 +9,8 @@ mkdir -p  nginx
 # start nginx container
 openssl dhparam -out nginx/dhparams.pem 2048
 sed "s/__DOMAIN__/${DOMAIN}/g; s/__PROXYHOST__/tesla_http_proxy/g" ../tesla_http_proxy/rootfs/app/nginx_tesla.conf > nginx/nginx_tesla.conf
+echo "Create docker network Tesla...."
+docker network create tesla
 echo "Starting nginx container..."
 docker rm -f nginx
 docker run --rm --name nginx -d -p 4430:443 -e DOMAIN="$DOMAIN" --network tesla \
