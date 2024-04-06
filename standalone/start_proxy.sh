@@ -5,10 +5,10 @@
 set -e
 
 source secrets.env
-
+mkdir -p  nginx
 # start nginx container
 openssl dhparam -out nginx/dhparams.pem 2048
-sed "s/__DOMAIN__/${DOMAIN}/g; s/__PROXYHOST__/tesla_http_proxy/g" ../tesla_http_proxy/app/nginx_tesla.conf > nginx/nginx_tesla.conf
+sed "s/__DOMAIN__/${DOMAIN}/g; s/__PROXYHOST__/tesla_http_proxy/g" ../tesla_http_proxy/rootfs/app/nginx_tesla.conf > nginx/nginx_tesla.conf
 echo "Starting nginx container..."
 docker rm -f nginx
 docker run --rm --name nginx -d -p 4430:443 -e DOMAIN="$DOMAIN" --network tesla \
@@ -33,3 +33,4 @@ docker run --rm --name tesla_http_proxy -p 8099:8099 -p 443:443 --network tesla 
     -e REGION="${REGION}" \
     -e SUPERVISOR_TOKEN="fake-token" \
     ghcr.io/llamafilm/tesla_http_proxy_${ARCH}:1.3.6
+
