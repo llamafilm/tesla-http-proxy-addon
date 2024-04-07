@@ -5,12 +5,21 @@
 set -e
 
 source secrets.env
-
+mkdir -p  nginx
 # start nginx container
 openssl dhparam -out nginx/dhparams.pem 2048
-sed "s/__DOMAIN__/${DOMAIN}/g; s/__PROXYHOST__/tesla_http_proxy/g" ../tesla_http_proxy/app/nginx_tesla.conf > nginx/nginx_tesla.conf
-echo "Starting nginx container..."
+sed "s/__DOMAIN__/${DOMAIN}/g; s/__PROXYHOST__/tesla_http_proxy/g" ../tesla_http_proxy/rootfs/app/nginx_tesla.conf > nginx/nginx_tesla.conf
+
+echo "Making sure we have a clean start if needed ..." 
 docker rm -f nginx
+docker rm -f tesla_http_proxy
+docker network rm tesla
+
+
+echo "Create docker network Tesla...."
+docker network create tesla
+echo "Starting nginx container..."
+
 docker run --rm --name nginx -d -p 4430:443 -e DOMAIN="$DOMAIN" --network tesla \
     -v ./ssl:/ssl:ro \
     -v ./share:/share:ro \
@@ -23,7 +32,7 @@ docker run --rm --name nginx -d -p 4430:443 -e DOMAIN="$DOMAIN" --network tesla 
 # docker build --build-arg BUILD_FROM=ghcr.io/home-assistant/${ARCH}-homeassistant-base tesla-http-proxy-addon/tesla_http_proxy
 
 # start proxy container
-docker rm -f tesla_http_proxy
+
 docker run --rm --name tesla_http_proxy -p 8099:8099 -p 443:443 --network tesla \
     -v ./share:/share \
     -v ./bashio:/tmp/.bashio:ro \
