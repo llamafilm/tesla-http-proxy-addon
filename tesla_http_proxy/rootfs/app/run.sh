@@ -74,6 +74,19 @@ else
   generate_keypair
 fi
 
+# verify domain $DOMAIN has an associated IP address, if not loop and retry
+bashio::log.info "Testing $DOMAIN for an associated IP address..."
+while :; do
+  if ! host $DOMAIN; then
+    bashio::log.fatal "$DOMAIN has no associated IP address, add a record in your DNS config."
+    bashio::log.fatal "Sleeping 2 minutes before retry."
+    sleep 2m
+  else
+    bashio::log.info "Found an IP address for $DOMAIN"
+    break
+  fi
+done
+
 # verify public key is accessible with valid TLS cert
 bashio::log.info "Testing public key..."
 if ! curl -sfD - "https://$DOMAIN/.well-known/appspecific/com.tesla.3p.public-key.pem"; then
