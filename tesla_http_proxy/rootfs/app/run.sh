@@ -89,10 +89,21 @@ done
 
 # verify public key is accessible with valid TLS cert
 bashio::log.info "Testing public key..."
-if ! curl -sfD - "https://$DOMAIN/.well-known/appspecific/com.tesla.3p.public-key.pem"; then
-  bashio::log.fatal "Fix public key before proceeding."
-  exit 1
-fi
+CURL_OUT=$(curl -sfLD - "https://$DOMAIN/.well-known/appspecific/com.tesla.3p.public-key.pem")
+echo "$CURL_OUT"
+# last HTTP code (in case of a redirect)
+HTTP_STATUS_CODE=$(echo "$CURL_OUT"|awk '/^HTTP/{print $2}'|tail -1)
+while :; do
+  if [ "$HTTP_STATUS_CODE" -ge 200 ] && [ "$HTTP_STATUS_CODE" -le 299 ]; then
+    # All good
+    break
+  else
+    bashio::log.alert "HTTP status code $HTTP_STATUS_CODE; Use a search engine to learn about the status code."
+    bashio::log.alert "If the request keeps failing, adjust your configuration for the request not to fail."
+    bashio::log.alert "Sleeping 2 minutes before retry."
+    sleep 2m
+  fi
+done
 
 if [ -z "$CLIENT_ID" ]; then
   bashio::log.notice "Request application access with Tesla, then fill in credentials and restart addon."
