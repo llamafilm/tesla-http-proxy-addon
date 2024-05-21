@@ -89,18 +89,21 @@ done
 
 # verify public key is accessible with valid TLS cert
 bashio::log.info "Testing public key..."
+set +e
 CURL_OUT=$(curl -sfLD - "https://$DOMAIN/.well-known/appspecific/com.tesla.3p.public-key.pem")
+set -e
 echo "$CURL_OUT"
-# last HTTP code (in case of a redirect)
+# last HTTP status code (in case of a redirect)
 HTTP_STATUS_CODE=$(echo "$CURL_OUT"|awk '/^HTTP/{print $2}'|tail -1)
 while :; do
   if [ "$HTTP_STATUS_CODE" -ge 200 ] && [ "$HTTP_STATUS_CODE" -le 299 ]; then
     # All good
+    bashio::log.info "The public key is accessible."
     break
   else
-    bashio::log.alert "HTTP status code $HTTP_STATUS_CODE; Use a search engine to learn about the status code."
-    bashio::log.alert "If the request keeps failing, adjust your configuration for the request not to fail."
-    bashio::log.alert "Sleeping 2 minutes before retry."
+    bashio::log.fatal "HTTP status code $HTTP_STATUS_CODE; Use a search engine to learn about the status code."
+    bashio::log.fatal "If the request keeps failing, adjust your configuration for the request not to fail."
+    bashio::log.fatal "Sleeping 2 minutes before retry."
     sleep 2m
   fi
 done
