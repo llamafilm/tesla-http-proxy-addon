@@ -89,9 +89,7 @@ done
 
 # verify public key is accessible with valid TLS cert
 bashio::log.info "Testing public key..."
-set +e
-CURL_OUT=$(curl -sfLD - "https://$DOMAIN/.well-known/appspecific/com.tesla.3p.public-key.pem")
-set -e
+CURL_OUT=$(curl -sfD - "https://$DOMAIN/.well-known/appspecific/com.tesla.3p.public-key.pem" || true)
 echo "$CURL_OUT"
 # last HTTP status code (in case of a redirect)
 HTTP_STATUS_CODE=$(echo "$CURL_OUT"|awk '/^HTTP/{print $2}'|tail -1)
