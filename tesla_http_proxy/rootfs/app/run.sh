@@ -94,7 +94,7 @@ echo "$CURL_OUT"
 # last HTTP status code (in case of a redirect)
 HTTP_STATUS_CODE=$(echo "$CURL_OUT"|awk '/^HTTP/{print $2}'|tail -1)
 while :; do
-  if [ "$HTTP_STATUS_CODE" -ne 200 ]; then
+  if [ "$HTTP_STATUS_CODE" -eq 200 ]; then
     # All good
     bashio::log.info "The public key is accessible."
     break
