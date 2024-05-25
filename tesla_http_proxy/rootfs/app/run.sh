@@ -78,8 +78,8 @@ fi
 bashio::log.info "Testing $DOMAIN for an associated IP address..."
 while :; do
   if ! host $DOMAIN; then
-    bashio::log.fatal "$DOMAIN has no associated IP address, add a record in your DNS config."
-    bashio::log.fatal "Sleeping 2 minutes before retry."
+    bashio::log.error "$DOMAIN has no associated IP address, add a record in your DNS config."
+    bashio::log.error "Sleeping 2 minutes before retry."
     sleep 2m
   else
     bashio::log.info "Found an IP address for $DOMAIN"
@@ -99,9 +99,7 @@ while :; do
     bashio::log.info "The public key is accessible."
     break
   else
-    bashio::log.fatal "HTTP status code $HTTP_STATUS_CODE; Use a search engine to learn about the status code."
-    bashio::log.fatal "If the request keeps failing, adjust your configuration for the request not to fail."
-    bashio::log.fatal "Sleeping 2 minutes before retry."
+    bashio::log.error "HTTP status code $HTTP_STATUS_CODE; Sleeping 2 minutes before retry."
     sleep 2m
   fi
 done
