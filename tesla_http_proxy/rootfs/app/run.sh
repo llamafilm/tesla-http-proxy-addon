@@ -78,8 +78,8 @@ fi
 bashio::log.info "Testing $DOMAIN for an associated IP address..."
 while :; do
   if ! host $DOMAIN; then
-    bashio::log.fatal "$DOMAIN has no associated IP address, add a record in your DNS config."
-    bashio::log.fatal "Sleeping 2 minutes before retry."
+    bashio::log.error "$DOMAIN has no associated IP address, add a record in your DNS config."
+    bashio::log.error "Sleeping 2 minutes before retry."
     sleep 2m
   else
     bashio::log.info "Found an IP address for $DOMAIN"
@@ -89,10 +89,20 @@ done
 
 # verify public key is accessible with valid TLS cert
 bashio::log.info "Testing public key..."
-if ! curl -sfD - "https://$DOMAIN/.well-known/appspecific/com.tesla.3p.public-key.pem"; then
-  bashio::log.fatal "Fix public key before proceeding."
-  exit 1
-fi
+CURL_OUT=$(curl -sfD - "https://$DOMAIN/.well-known/appspecific/com.tesla.3p.public-key.pem" || true)
+echo "$CURL_OUT"
+# last HTTP status code (in case of a redirect)
+HTTP_STATUS_CODE=$(echo "$CURL_OUT"|awk '/^HTTP/{print $2}'|tail -1)
+while :; do
+  if [ "$HTTP_STATUS_CODE" -eq 200 ]; then
+    # All good
+    bashio::log.info "The public key is accessible."
+    break
+  else
+    bashio::log.error "HTTP status code $HTTP_STATUS_CODE; Sleeping 2 minutes before retry."
+    sleep 2m
+  fi
+done
 
 if [ -z "$CLIENT_ID" ]; then
   bashio::log.notice "Request application access with Tesla, then fill in credentials and restart addon."
