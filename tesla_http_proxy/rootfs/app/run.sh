@@ -87,21 +87,27 @@ while :; do
   fi
 done
 
-# verify public key is accessible with valid TLS cert
+# verify valid TLS cert
+bashio::log.info "Testing SSL certificate..."
+echo | openssl s_client -connect $DOMAIN:443
+
+# verify public key is accessible
 bashio::log.info "Testing public key..."
-CURL_OUT=$(curl -sfD - "https://$DOMAIN/.well-known/appspecific/com.tesla.3p.public-key.pem" || true)
-echo "$CURL_OUT"
-# last HTTP status code (in case of a redirect)
-HTTP_STATUS_CODE=$(echo "$CURL_OUT"|awk '/^HTTP/{print $2}'|tail -1)
 while :; do
-  if [ "$HTTP_STATUS_CODE" -eq 200 ]; then
+  CURL_OUT=$(curl -sfD - "https://$DOMAIN/.well-known/appspecific/com.tesla.3p.public-key.pem" || true)
+  echo "$CURL_OUT"
+  # last HTTP status code (in case of a redirect)
+  HTTP_STATUS_CODE=$(echo "$CURL_OUT"|awk '/^HTTP/{print $2}'|tail -1)
+  if [ -z $HTTP_STATUS_CODE ]; then
+    bashio::log.error "No HTTP status code returned; Sleeping 2 minutes before retry.""
+  elif [ "$HTTP_STATUS_CODE" -eq 200 ]; then
     # All good
     bashio::log.info "The public key is accessible."
     break
   else
     bashio::log.error "HTTP status code $HTTP_STATUS_CODE; Sleeping 2 minutes before retry."
-    sleep 2m
   fi
+  sleep 2m
 done
 
 if [ -z "$CLIENT_ID" ]; then
