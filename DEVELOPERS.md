@@ -33,5 +33,5 @@ Th `start_proxy.sh` script will start 2 Docker containers, one for Nginx and one
 - Copy TLS cert and key to `ssl/fullchain.pem` and `ssl/privkey.pem`
 - Set environment variables in `secrets.env`
 - Run `start_proxy.sh`
-- Start OAuth at http://localhost:8099 and it will callback to https://DOMAIN/callback
-- After getting the token, edit `addons.self.options.config.cache` to change true to false and then restart
+- Start OAuth at http://localhost:8099 and follow instructions in [DOCS.md](tesla_http_proxy/DOCS.md).
+- After getting the token, edit `addons.self.options.config.cache` to set `regenerate_auth` to false and then restart
