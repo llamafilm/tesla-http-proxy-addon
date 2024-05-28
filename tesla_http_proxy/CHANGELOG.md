@@ -1,16 +1,10 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
-## 2.2.5
+## 2.2.6
 
 ### Changed
 
-- Retry public key check if HTTP status code != 200
-
-## 2.2.4
-
-### Changed
-
-- Retry public key check if no IP address is found for the FQDN
+- Retry public key check for 1 hour if HTTP request fails
 
 ## 2.2.3
 
