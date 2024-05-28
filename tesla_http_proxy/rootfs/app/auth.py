@@ -63,20 +63,21 @@ if req.status_code >= 400:
     raise SystemExit(1)
 logger.debug(req.text)
 
-# disable regenerate_auth to skip Python code on next launch
-req = requests.get('http://supervisor/addons/self/options/config',
-    headers={
-        'Authorization': f'Bearer {SUPERVISOR_TOKEN}'
-    }
-)
-options = req.json()['data']
-options['regenerate_auth'] = False
+if os.environ.get('HASSIO_TOKEN'):
+    # disable regenerate_auth to skip Python code on next launch
+    req = requests.get('http://supervisor/addons/self/options/config',
+        headers={
+            'Authorization': f'Bearer {SUPERVISOR_TOKEN}'
+        }
+    )
+    options = req.json()['data']
+    options['regenerate_auth'] = False
 
-req = requests.post('http://supervisor/addons/self/options',
-    headers={
-        'Authorization': f'Bearer {SUPERVISOR_TOKEN}'
-    },
-    json={
-        'options': options
-    }
-)
+    req = requests.post('http://supervisor/addons/self/options',
+        headers={
+            'Authorization': f'Bearer {SUPERVISOR_TOKEN}'
+        },
+        json={
+            'options': options
+        }
+    )
