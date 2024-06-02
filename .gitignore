@@ -2,3 +2,4 @@
 standalone/nginx
 standalone/share
 standalone/ssl
+standalone/secrets.env

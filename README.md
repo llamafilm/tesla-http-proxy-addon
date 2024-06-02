@@ -41,18 +41,4 @@ Notes to developers after forking or using the github template feature:
 [armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
 [i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
 
-## Standalone Usage
-
-If you are not running HAOS, the proxy can run separately as a Docker container.  This is also helpful for development while working in the Tesla integration devcontainer.  The included script will start 2 Docker containers, one for Nginx and one for the proxy.  It mimics some HAOS concepts including folder structure and bashio so you can use the same Docker image as the addon.  You may need to modify according to your environemnt.
-
-- Forward https://DOMAIN:443 to localhost:4430
-- Start Docker
-- Clone this repo
-- Navigate to the `standalone` folder
-- Copy TLS cert and key to `ssl/fullchain.pem` and `ssl/privkey.pem`
-- Set environment variables in `secrets.env`
-- Run `start_proxy.sh`
-- Start OAuth at http://localhost:8099 and it will callback to https://DOMAIN/callback
-- After getting the token, edit `addons.self.options.config.cache` to change true to false and then restart
-
 [installations-shield-stable]: https://img.shields.io/badge/dynamic/json?url=https://analytics.home-assistant.io/addons.json&query=$["c03d64a7_tesla_http_proxy"].total&label=Reported%20Installations&link=https://analytics.home-assistant.io/add-ons
