@@ -6,7 +6,7 @@
 # Define these variables in a new file called secrets.env
 ARCH=aarch64 # options: aarch64, amd64, armhf, armv7, i386
 DEBUG=true # must be lowercase
-REGION="North America, Asia-Pacific" # options defined in const.py 
+REGION="North America, Asia-Pacific" # options defined in const.py
 DOMAIN=
 CLIENT_ID=
 CLIENT_SECRET=
@@ -52,4 +52,4 @@ docker run --rm --name tesla_http_proxy -p 8099:8099 -p 443:443 --network tesla 
     -e REGION="${REGION}" \
     -e SUPERVISOR_TOKEN="fake-token" \
     -e DEBUG="${DEBUG}" \
-    ghcr.io/llamafilm/tesla_http_proxy_"${ARCH}":2.2.6
+    ghcr.io/llamafilm/tesla_http_proxy_"${ARCH}":2.2.7
