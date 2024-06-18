@@ -1,5 +1,12 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2.2.8
+
+### Changed
+
+- Bump [vehicle-command version](https://github.com/teslamotors/vehicle-command/pull/259) to allow exporting private key
+- Standalone usage without supervisor
+
 ## 2.2.6
 
 ### Changed
