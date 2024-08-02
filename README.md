@@ -4,6 +4,13 @@
 
 This code is free to use but if you want to show support you may <br><a href="https://www.buymeacoffee.com/llamafilm" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 144px !important;" ></a>
 
+Allows [Tesla Custom Integration](https://github.com/alandtse/tesla) to use the new Fleet API.
+Read the [Docs](tesla_http_proxy/DOCS.md) to see how to set this up.
+
+## Home Assistant Core
+
+Users of Home Assistant Core might be interested in this alternative: https://github.com/functionpointer/tesla-http-proxy-standalone
+
 ## Add-ons
 
 This repository contains the following add-ons
