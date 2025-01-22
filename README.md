@@ -4,6 +4,13 @@ Update January 2025:  This addon is no longer maintained, as I sold my Tesla.  A
 
 [![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fllamafilm%2Ftesla-http-proxy-addon)
 
+Allows [Tesla Custom Integration](https://github.com/alandtse/tesla) to use the new Fleet API.
+Read the [Docs](tesla_http_proxy/DOCS.md) to see how to set this up.
+
+## Home Assistant Core
+
+Users of Home Assistant Core might be interested in this alternative: https://github.com/functionpointer/tesla-http-proxy-standalone
+
 ## Add-ons
 
 This repository contains the following add-ons
