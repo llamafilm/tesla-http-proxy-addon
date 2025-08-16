@@ -1,5 +1,11 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2.3.0
+
+### Changed
+
+- Change to new API auth endpoint
+
 ## 2.2.8
 
 ### Changed
