@@ -33,4 +33,6 @@ WORKDIR /data
 COPY rootfs /
 RUN chmod a+x /app/run.sh
 
+EXPOSE 8099/tcp
+
 CMD [ "/app/run.sh" ]

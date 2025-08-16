@@ -36,5 +36,5 @@ backup_exclude:
 hassio_api: true
 stage: experimental
 ports:
-  443/tcp: 4430
+  8099/tcp: 4430
 image: "ghcr.io/llamafilm/tesla_http_proxy_{arch}"
